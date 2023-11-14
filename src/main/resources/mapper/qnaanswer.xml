@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.qna.model.mapper.QnaAnswerMapper">
+	<resultMap type="qnaAnswerDto" id ="qnaAnswerDto">
+		<result column = "id" property= "id"/>
+		<result column = "user_id" property= "userId"/>
+		<result column = "qna_id" property= "qnaId"/>
+		<result column = "content" property= "content"/>
+		<result column = "resgiter_time" property= "registerTime"/>
+	</resultMap>
+	
+	<insert id="register" parameterType="qnaAnswerDto">
+    INSERT INTO qna_answer (qna_id, content, user_id, resgiter_time)
+    VALUES (#{qnaId}, #{content}, #{userId}, now())
+	</insert>
+	
+	<update id="update" parameterType="qnaAnswerDto">
+		update qna_answer
+		<trim prefix="set" suffixOverrides=",">
+			<if test="content != null">content = #{content}</if>
+		</trim>
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteById" parameterType="int">
+    	DELETE FROM qna_answer
+    	WHERE id= #{id}
+	</delete>
+	
+	<select id="searchByQnaId" parameterType="int" resultMap="qnaAnswerDto">
+		select id, user_id, qna_id, content, resgiter_time 
+		from qna_answer
+		where qna_id=#{qnaId}
+	</select>
+	
+</mapper>

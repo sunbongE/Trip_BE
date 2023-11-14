@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.user.model.mapper.UserMapper">
+	<resultMap type="userDto" id="userDto">
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_password" property="userPassword"/>
+		<result column="email_id" property="emailId"/>
+		<result column="email_domain" property="emailDomain"/>
+		<result column="birth" property="birth"/>
+		<result column="user_sido_id" property="userSidoId"/>
+		<result column="user_gu_id" property="userGuId"/>
+		<result column="join_date" property="joinDate"/>
+	</resultMap>
+	
+	<insert id="join" parameterType="userDto">
+    INSERT INTO members (user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date)
+    VALUES (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, #{birth}, #{userSidoId}, #{userGuId}, #{joinDate})
+	</insert>
+	
+	<select id="login" parameterType="map" resultType="userDto">
+    SELECT * FROM members
+    WHERE user_id = #{userId} AND user_password = #{userPassword}
+	</select>
+	
+	<update id="update" parameterType="userDto">
+		update members
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userPassword != null">user_password = #{userPassword},</if>
+			<if test="userName != null">user_name = #{userName},</if>
+			<if test="emailId != null">email_id = #{emailId},</if>
+			<if test="emailDomain != null">email_domain = #{emailDomain},</if>
+		</trim>
+		where user_id = #{userId}
+	</update>
+	
+    <select id="checkId" parameterType="String" resultType="int">
+		select count(user_id)
+		from members
+		where user_id = #{userId}
+	</select>
+	
+  	<delete id="delete" parameterType="String">
+    	DELETE FROM members 
+    	WHERE user_id= #{userId}
+	</delete>
+	
+	<select id="findByUserId" parameterType="String" resultMap="userDto">
+		select * from members
+		where user_id=#{userId}
+	</select>
+<!--
+	<resultMap type="userDto" id="userDto">
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_password" property="userPassword"/>
+		<result column="gender" property="gender"/>
+		<result column="birthdate" property="birthdate"/>
+		<result column="phone" property="phone"/>
+		<result column="email_id" property="emailId"/>
+		<result column="email_domain" property="emailDomain"/>
+		<result column="salt" property="salt"/>
+		<result column="grade" property="grade"/>
+	</resultMap>
+	
+	<insert id="join" parameterType="userDto">
+    INSERT INTO user (user_id, user_name, user_password, gender, birthdate, phone, email_id, email_domain, salt, grade)
+    VALUES (#{userId}, #{userName}, #{userPassword}, #{gender}, #{birthdate}, #{phone}, #{emailId}, #{emailDomain}, #{salt}, #{grade})
+	</insert>
+	
+	<select id="login" parameterType="map" resultType="userDto">
+    SELECT * FROM user
+    WHERE user_id = #{userId} AND user_password = #{userPassword}
+	</select>
+	
+	<update id="update" parameterType="userDto">
+		update user
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userPassword != null">user_password = #{userPassword},</if>
+			<if test="userName != null">user_name = #{userName},</if>
+			<if test="emailId != null">email_id = #{emailId},</if>
+			<if test="emailDomain != null">email_domain = #{emailDomain},</if>
+		</trim>
+		where user_id = #{userId}
+	</update>
+	
+    <select id="checkId" parameterType="String" resultType="int">
+		select count(user_id)
+		from user
+		where user_id = #{userId}
+	</select>
+	
+  	<delete id="delete" parameterType="String">
+    	DELETE FROM user 
+    	WHERE user_id= #{userId}
+	</delete>
+	
+	<select id="findByUserId" parameterType="String" resultMap="userDto">
+		select * from user
+		where user_id=#{userId}
+	</select>
+-->
+</mapper>

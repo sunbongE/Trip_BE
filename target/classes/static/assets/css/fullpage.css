@@ -1,0 +1,37 @@
+
+
+
+  #sec1 {
+    background-image: url('../img/backimg/img2.jpg');
+    background-size: cover;
+}
+ input:focus {outline: none;}
+ #search{
+width: 40%;
+    font-size: 60px;
+  border-width: 0 0 5px;
+  background: transparent;
+  }
+ 
+
+ 
+ #fp-nav > ul > li > a > span {
+ background: #51abf3 !important;
+ }
+ 
+#textbox>div>span{
+ 	font-size: 4em;
+ }
+#textbox>div:first-child{
+	display: flex;
+}
+ #base{
+ display: grid;
+    justify-items: center;
+    grid-template-columns: 2.5fr 1fr;
+    margin: 0 2em;
+    }
+    
+ #textbox>div{
+ text-align: end;
+ }

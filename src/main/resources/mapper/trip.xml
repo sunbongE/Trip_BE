@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.trip.model.mapper.AttractionMapper">
+<!-- 시도 -->
+	<resultMap type="sidoDto" id="sido">
+		<result column="sido_code" property="sidoCode"/>
+		<result column="sido_name" property="sidoName"/>
+	</resultMap>
+<!-- 군구 -->
+	<resultMap type="gugunDto" id="gugun">
+		<result column="gugun_code" property="gugunCode"/>
+		<result column="gugun_name" property="gugunName"/>
+		<result column="sido_code" property="sidoCode"/>
+	</resultMap>
+<!-- 여행지 설명 정보 -->
+	<resultMap type="attractionDescriptionDto" id="description">
+		<result column="content_id" property="contentId"/>
+		<result column="homepage" property="homepage"/>
+		<result column="overview" property="overview"/>
+		<result column="telname" property="telname"/>
+	</resultMap>
+<!-- 여행지 상세 정보 -->
+	<resultMap type="attractionDetailDto" id="detail">
+		<result column="content_id" property="contentId"/>
+		<result column="cat1" property="cat1"/>
+		<result column="cat2" property="cat2"/>
+		<result column="cat3" property="cat3"/>
+		<result column="created_time" property="createdTime"/>
+		<result column="modified_time" property="modifiedTime"/>
+		<result column="booktour" property="booktour"/>
+	</resultMap>
+
+<!-- 여행지 기본 정보(list) -->
+	<resultMap type="attractionInfoDto" id="info">
+		<result column="content_id" property="contentId"/>
+		<result column="contentType_id" property="contentTypeId"/>
+		<result column="title" property="title"/>
+		<result column="addr1" property="addr1"/>
+		<result column="addr2" property="addr2"/>
+		<result column="zipcode" property="zipcode"/>
+		<result column="first_image" property="firstImage"/>
+		<result column="first_image2" property="firstImage2"/>
+		<result column="readcount" property="readcount"/>
+		<result column="sido_code" property="sidoCode"/>
+		<result column="gugun_code" property="gugunCode"/>
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
+		<result column="mlevel" property="mlevel"/>
+	</resultMap>
+	
+	<!-- sql -->
+	<select id="sidoList" resultMap="sido">
+	select sido_code, sido_name
+	from sido
+	</select>
+	
+	<select id="gugunList" parameterType="int" resultMap="gugun">
+	select gugun_code, gugun_name,sido_code
+	from gugun where sido_code = #{sidoCode}
+	</select>
+	
+	<select id="attractionList" resultMap="info">
+	select gugun_code, gugun_name,sido_code
+	from attraction_info
+	</select>
+	
+	<select id="searchTourinfo" parameterType="map" resultMap="info">
+	select content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image,first_image2,readcount,latitude,longitude,mlevel
+	from attraction_info 
+	where sido_code=#{sidoCode} and gugun_code=#{gugunCode} and content_type_id=#{contentTypeId}
+	</select>
+
+	<select id="searchByTitle" parameterType="String" resultMap="info">
+	select content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image,first_image2,readcount,latitude,longitude,mlevel
+	from attraction_info 
+	where title like concat('%',#{title},'%')
+	</select>
+	
+</mapper>

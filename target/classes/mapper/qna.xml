@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.qna.model.mapper.QnaMapper">
+	<resultMap type="qnaDto" id ="qnaDto">
+		<result column = "id" property= "id"/>
+		<result column = "user_id" property= "userId"/>
+		<result column = "subject" property= "subject"/>
+		<result column = "content" property= "content"/>
+		<result column = "open" property= "open"/>
+		<result column = "register_time" property= "registerTime"/>
+	</resultMap>
+	
+	<insert id="register" parameterType="qnaDto">
+    INSERT INTO qna (user_id, subject, content, open, register_time)
+    VALUES (#{userId}, #{subject}, #{content}, #{open}, now())
+	</insert>
+	
+	<update id="update" parameterType="qnaDto">
+		update qna
+		<trim prefix="set" suffixOverrides=",">
+			<if test="subject != null">subject = #{subject},</if>
+			<if test="content != null">content = #{content}</if>
+		</trim>
+		where id = #{id}
+	</update>
+	
+	
+  	<delete id="deleteById" parameterType="int">
+    	DELETE FROM qna 
+    	WHERE id= #{id}
+	</delete>
+	
+	<select id="findById" parameterType="map" resultMap="qnaDto">
+		select * from qna
+		where id=#{id}
+	</select>
+	
+	<select id="searchAll" parameterType="map" resultMap="qnaDto" >
+		select * from qna;
+	</select>
+	
+	<select id="searchByUserId" parameterType="map" resultMap="qnaDto">
+		select id, user_id, subject, content, open, register_time 
+		from qna
+		where user_id=#{userId}
+	</select>
+	
+	
+	<select id="searchBySubject" parameterType="map" resultMap="qnaDto">
+	    SELECT id, user_id, subject, content, open, register_time 
+	    FROM qna
+	    WHERE subject LIKE CONCAT('%', #{subject}, '%')
+	</select>
+</mapper>
