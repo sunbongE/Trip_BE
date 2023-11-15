@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.qna.model.mapper.QnaAnswerMapper">
-	<resultMap type="qnaAnswerDto" id ="qnaAnswerDto">
+	<resultMap type="qnaAnswerDto" id ="qnaAnswer">
 		<result column = "id" property= "id"/>
 		<result column = "user_id" property= "userId"/>
 		<result column = "qna_id" property= "qnaId"/>
@@ -29,7 +29,7 @@
     	WHERE id= #{id}
 	</delete>
 	
-	<select id="searchByQnaId" parameterType="int" resultMap="qnaAnswerDto">
+	<select id="searchByQnaId" parameterType="int" resultMap="qnaAnswer">
 		select id, user_id, qna_id, content, resgiter_time 
 		from qna_answer
 		where qna_id=#{qnaId}

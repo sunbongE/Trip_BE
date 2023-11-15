@@ -2,9 +2,10 @@ package com.ssafy.user.model;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@NoArgsConstructor
 public class UserDto {
 //
 //	private String userId;

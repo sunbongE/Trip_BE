@@ -58,6 +58,7 @@ public class UserContoller {
 		userService.join(userDto);
 		
 		String userId = userDto.getUserId();
+		log.debug("JOINED ID {} ", userId);
 		UserDto joined = userService.findByUserId(userId);
 		
 		return new ResponseEntity<>(joined, HttpStatus.OK);
@@ -65,10 +66,10 @@ public class UserContoller {
 	
 	@PostMapping("/login")
 	public ResponseEntity<UserDto> login(@RequestBody Map<String, String> map) throws SQLException {
-//		System.out.println(userDto.getUserId());
 		System.out.println("LOGIN REQUEST ID : " + map.get("userId"));
 		UserDto userDto = userService.login(map);
 		System.out.println("LOGIN RESPONSE ID : " + userDto.getUserId());
+		System.out.println(userDto);
 		return new ResponseEntity<>(userDto, HttpStatus.OK);
 	}
 	

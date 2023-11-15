@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.user.model.mapper.UserMapper">
-	<resultMap type="userDto" id="userDto">
+	<resultMap type="userDto" id="user">
 		<result column="user_id" property="userId"/>
 		<result column="user_name" property="userName"/>
 		<result column="user_password" property="userPassword"/>
@@ -17,12 +17,13 @@
 	
 	<insert id="join" parameterType="userDto">
     INSERT INTO members (user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date)
-    VALUES (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, #{birth}, #{userSidoId}, #{userGuId}, #{joinDate})
+    VALUES (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, #{birth}, #{userSidoId}, #{userGuId}, now())
 	</insert>
 	
-	<select id="login" parameterType="map" resultType="userDto">
-    SELECT * FROM members
-    WHERE user_id = #{userId} AND user_password = #{userPassword}
+	<select id="login" parameterType="map" resultMap="user">
+    select user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date
+		from members
+		where user_id=#{userId} and user_password = #{userPassword}
 	</select>
 	
 	<update id="update" parameterType="userDto">
@@ -47,8 +48,9 @@
     	WHERE user_id= #{userId}
 	</delete>
 	
-	<select id="findByUserId" parameterType="map" resultMap="userDto">
-		select * from members
+	<select id="findByUserId" parameterType="map" resultMap="user">
+		select user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date
+		from members
 		where user_id=#{userId}
 	</select>
 	
