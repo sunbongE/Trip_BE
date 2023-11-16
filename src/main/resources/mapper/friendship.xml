@@ -18,6 +18,15 @@
 	where to_user_id = #{userId} and status = 203
 	</select>
 
+	<update id="answer" parameterType="friendshipDto">
+	update friendship 
+	set status = #{status}
+	where id = #{id}
+	</update>
 
-
+	<delete id="deleteById" parameterType="int">
+	delete from friendship
+	where id = #{id}
+	
+	</delete>
 </mapper>
