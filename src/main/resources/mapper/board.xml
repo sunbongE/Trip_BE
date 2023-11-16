@@ -14,11 +14,9 @@
 		<result column="recomment" property="recomment"/>
 		<result column="category" property="category"/>
 		<result column="content_id" property="contentId"/>
-	</resultMap>
-	
-	<resultMap type="boardDto" id="viewArticle" extends="article">
 		<collection property="fileInfos" column="article_no" javaType="list" ofType="fileInfoDto" select="fileInfoList"/>
 	</resultMap>
+	
 	
 	<sql id="search">
 		<if test="word != null and word != ''">
@@ -34,7 +32,24 @@
 	<insert id="registerArticle" parameterType="boardDto">
 	insert into board(user_id, subject, content, register_time,category,content_id)
 	values(#{userId},#{subject}, #{content},now(),#{category},#{contentId})
+	<selectKey resultType="int" keyProperty="articleNo" order="AFTER">
+	Select LAST_INSERT_ID()
+	</selectKey>
 	</insert>
+	
+	<insert id="fileRegister" parameterType="BoardDto">
+	insert into file_info (article_no, save_folder, original_file,save_file)
+	values
+	<foreach collection="fileInfos" item="fileinfo" separator=" , ">
+	(#{articleNo},#{fileinfo.saveFolder},#{fileinfo.originalFile},#{fileinfo.saveFile})
+	</foreach>
+	</insert>
+	
+	<select id="fileInfoList" resultType="FileInfoDto">
+	select save_folder, original_file, save_file
+	from file_info
+	where article_no = #{articleNo}
+	</select>
 	
 	<select id="searchListAll" parameterType="map" resultMap="article">
 	select article_no,user_id,subject,content, hit, register_time ,category , content_id

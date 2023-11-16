@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.board.model.BoardDto;
 import com.ssafy.board.model.BoardListDto;
@@ -21,8 +22,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	@Transactional
 	public void registerArticle(BoardDto boardDto) {
 		boardMapper.registerArticle(boardDto);
+		// file upload
+		boardMapper.fileRegister(boardDto);
 	}
 
 	@Override

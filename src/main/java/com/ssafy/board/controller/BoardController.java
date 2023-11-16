@@ -1,11 +1,17 @@
 package com.ssafy.board.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +32,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.board.model.BoardDto;
 import com.ssafy.board.model.BoardListDto;
+import com.ssafy.board.model.FileInfoDto;
 import com.ssafy.board.model.service.BoardService;
 import com.ssafy.util.BoardUtil;
 
@@ -51,7 +59,31 @@ public class BoardController extends HttpServlet {
 	}
 
 	@PostMapping("/regist")
-	protected ResponseEntity<?> regist(@RequestBody BoardDto boardDto) {
+	protected ResponseEntity<?> regist(@RequestBody BoardDto boardDto,@RequestParam("upfile") MultipartFile[] files,ServletContext servletContext) throws IllegalStateException, IOException {
+		if(files!=null) {
+			
+		// 파일 저장을 위한 로직..
+		String realPath = servletContext.getRealPath("/upload");
+		String today = new SimpleDateFormat("yymmdd").format(new Date());
+		String saveFolder = realPath+File.separator+today;
+		File folder = new File(saveFolder);
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		List<FileInfoDto> fileInfos = new ArrayList<FileInfoDto>()	;
+		for (MultipartFile mfile : files) {
+			FileInfoDto fileInfoDto = new FileInfoDto();
+			String originalFileName = mfile.getOriginalFilename();
+			if(!originalFileName.isEmpty()) {
+				String saveFileName = UUID.randomUUID().toString()+originalFileName.substring(originalFileName.lastIndexOf('.'));
+				fileInfoDto.setSaveFolder(today);
+				fileInfoDto.setOriginalFile(originalFileName);
+				fileInfoDto.setSaveFile(saveFileName);
+				mfile.transferTo(new File(folder, saveFileName));
+			}
+			fileInfos.add(fileInfoDto);
+		}
+		}
 		try {
 			System.out.println(boardDto);
 //			 비속어 필터

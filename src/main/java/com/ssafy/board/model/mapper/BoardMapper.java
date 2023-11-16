@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.board.model.BoardDto;
+import com.ssafy.board.model.FileInfoDto;
 @Mapper
 public interface BoardMapper {
 
@@ -26,4 +27,8 @@ public interface BoardMapper {
 	
 	void updateHit(int articleNo);
 	void updateRecomment(int articleNo);
+	
+	void fileRegister(BoardDto boardDto);
+	
+	List<FileInfoDto> fileInfoDto(int articleNo);
 }
