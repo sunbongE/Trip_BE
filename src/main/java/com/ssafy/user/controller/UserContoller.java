@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.user.model.UserDto;
 import com.ssafy.user.model.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -127,6 +129,21 @@ public class UserContoller {
 				return ResponseEntity.status(HttpStatus.OK).body(userPwd);
 			}else {
 				return new ResponseEntity<>("일치하는 회원이 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
+	@ApiOperation(value = "회원페이지로 이동.", notes = "선택한 회원의 프로필을 확인하기위한 정보를 가져온다.")
+	@GetMapping("/{userId}")
+	public ResponseEntity<?> findByUserId(@PathVariable("userId") String userId){
+		try {
+			UserDto userDto = userService.findByUserId(userId);
+			if(userDto==null) {
+				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			}else {
+				return ResponseEntity.status(HttpStatus.OK).body(userDto);
 			}
 		} catch (Exception e) {
 			return exceptionHandling(e);

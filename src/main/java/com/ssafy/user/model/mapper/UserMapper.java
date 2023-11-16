@@ -11,12 +11,20 @@ import com.ssafy.user.model.UserDto;
 public interface UserMapper {
 
 	void join(UserDto userDto) throws SQLException;
+	
 	UserDto login(Map<String, String> map) throws SQLException;
+	
 	int update(UserDto userDto) throws SQLException;
+	
 	void delete(String userId) throws SQLException;
+	
 	boolean checkId(String userId) throws SQLException;
+	
 	UserDto findByUserId(String userId) throws SQLException;
+	
 	String findUserId(Map<String, String> map);
+	
 	String findUserPwd(Map<String, String> map);
+	
 	int updatePasswordInfo(Map<String, String> map) throws Exception;
 }
