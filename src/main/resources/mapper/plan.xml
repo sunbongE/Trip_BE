@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.plan.model.mapper.PlanMapper">
+	<resultMap type="planDto" id="plan">
+		<result column="id" property="id"/>
+		<result column="user_id" property="userId"/>
+		<result column="description" property="description"/>
+		<result column="subject" property="subject"/>
+	</resultMap>
+
+	<resultMap type="planInfoDto" id="planInfo">
+		<result column="plan_id" property="planId"/>
+		<result column="content_id" property="contentId"/>
+		<result column="content_order" property="contentOrder"/>
+	</resultMap>
+	
+	<insert id="registPlan" parameterType="planDto">
+		insert into plan (subject, user_id, description)
+		values(#{subject}, #{userId}, #{description})
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<update id="updatePlanById" parameterType="planDto">
+		update plan
+		set description = #{description}
+		where id = #{id}
+	</update>
+	
+	<delete id="deletePlanById" parameterType="int">
+		delete from plan
+		where id=#{id};
+	</delete>
+	
+	<insert id="registPlanInfo" parameterType="map">
+		insert into plan_info (plan_id, content_id, content_order)
+		values (#{planId}, #{contentId}, #{contentOrder})
+		on duplicate key update content_order = #{contentOrder}
+	</insert>
+	
+	<delete id="deletePlanInfo" parameterType="map">
+		delete from plan_info
+		where plan_id = #{planId} and content_order = #{contentOrder}
+	</delete>
+	
+	<select id="searchPlanInfoByPlanId" parameterType="map" resultMap="planInfo">
+		select * from plan_info
+		where plan_id = #{planId}
+		order by content_order;
+	</select>
+
+	<select id="findPlanById" parameterType="int" resultMap="plan">
+		select * from plan
+		where id=#{id}
+	</select>
+</mapper>
