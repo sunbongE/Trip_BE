@@ -5,9 +5,9 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class PlanSearchResponseDto {
+public class PlanUpdateRequestDto {
 
-	private int id;
+	private int id; // plan의 pk id
 	private String userId;
 	private String subject;
 	private String description;

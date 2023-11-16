@@ -24,9 +24,12 @@
 		</selectKey>
 	</insert>
 	
+	<select id="selectPlanAll" parameterType="map" resultMap="plan">
+		select * from plan;
+	</select>
 	<update id="updatePlanById" parameterType="planDto">
 		update plan
-		set description = #{description}
+		set description = #{description}, subject = #{subject}
 		where id = #{id}
 	</update>
 	
@@ -34,6 +37,13 @@
 		delete from plan
 		where id=#{id};
 	</delete>
+	
+	<select id="findPlanById" parameterType="int" resultMap="plan">
+		select * from plan
+		where id=#{id}
+	</select>
+	
+	
 	
 	<insert id="registPlanInfo" parameterType="map">
 		insert into plan_info (plan_id, content_id, content_order)
@@ -46,14 +56,13 @@
 		where plan_id = #{planId} and content_order = #{contentOrder}
 	</delete>
 	
+	<delete id="deletePlanInfoByPlanId" parameterType="int">
+		delete from plan_info
+		where plan_id = #{planId};
+	</delete>
 	<select id="searchPlanInfoByPlanId" parameterType="map" resultMap="planInfo">
 		select * from plan_info
 		where plan_id = #{planId}
 		order by content_order;
-	</select>
-
-	<select id="findPlanById" parameterType="int" resultMap="plan">
-		select * from plan
-		where id=#{id}
 	</select>
 </mapper>
