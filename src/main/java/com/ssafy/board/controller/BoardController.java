@@ -60,7 +60,6 @@ public class BoardController extends HttpServlet {
 
 	@PostMapping("/regist")
 	protected ResponseEntity<?> regist(@RequestBody BoardDto boardDto,@RequestParam("upfile") MultipartFile[] files,ServletContext servletContext) throws IllegalStateException, IOException {
-		if(files!=null) {
 			
 		// 파일 저장을 위한 로직..
 		String realPath = servletContext.getRealPath("/upload");
@@ -83,7 +82,7 @@ public class BoardController extends HttpServlet {
 			}
 			fileInfos.add(fileInfoDto);
 		}
-		}
+		
 		try {
 			System.out.println(boardDto);
 //			 비속어 필터
