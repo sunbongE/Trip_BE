@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.qna.model.QnaDto;
 import com.ssafy.qna.model.service.QnaService;
 import com.ssafy.user.controller.UserContoller;
+import com.ssafy.util.BoardUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,16 +34,21 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin("*")
 @Slf4j
 public class QnaController {
-
 	private final QnaService qnaService;
 
 	public QnaController(QnaService qnaService) {
 		this.qnaService = qnaService;
 	}
+	BoardUtil boardUtil = BoardUtil.getInstance();
 
 //	void register(QnaDto qnaDto) throws SQLException;
 	@PostMapping("/regist")
 	public ResponseEntity<?> register(@RequestBody QnaDto qnaDto ) throws SQLException {
+//		 비속어 필터
+			if (boardUtil.filterSlangs(qnaDto.getContent())) {
+				System.out.println("비속어 감지");
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
 		qnaService.register(qnaDto);
 		List<QnaDto> list = qnaService.searchAll();
 		return new ResponseEntity<List<QnaDto>>(list, HttpStatus.OK);
@@ -51,6 +57,11 @@ public class QnaController {
 //	void update(QnaDto qnaDto) throws SQLException;
 	@PutMapping("/update")
 	protected  ResponseEntity<?> modify(@RequestBody QnaDto qnaDto) {
+//		 비속어 필터
+			if (boardUtil.filterSlangs(qnaDto.getContent())) {
+				System.out.println("비속어 감지");
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
 		try {
 			qnaService.update(qnaDto);
 			System.out.println(qnaDto);
