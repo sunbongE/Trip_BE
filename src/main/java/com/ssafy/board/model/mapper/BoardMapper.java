@@ -21,4 +21,5 @@ public interface BoardMapper {
 	void deleteArticle(int articleNo);
 	
 	void updateHit(int articleNo);
+	void updateRecomment(int articleNo);
 }

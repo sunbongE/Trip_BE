@@ -11,20 +11,23 @@
 		<result column="content" property="content"/>
 		<result column="hit" property="hit"/>
 		<result column="register_time" property="registerTime"/>
+		<result column="recomment" property="recomment"/>
+		<result column="category" property="category"/>
+		<result column="content_id" property="contentId"/>
 	</resultMap>
 
 	<insert id="registerArticle" parameterType="boardDto">
-	insert into board(user_id, subject, content, register_time)
-	values(#{userId},#{subject}, #{content},now())
+	insert into board(user_id, subject, content, register_time,category,contentId)
+	values(#{userId},#{subject}, #{content},now(),#{category},#{contentId})
 	</insert>
 	
 	<select id="searchListAll" parameterType="map" resultMap="article">
-	select article_no,user_id,subject,content, hit, register_time 
+	select article_no,user_id,subject,content, hit, register_time ,category , contentId
 	from board order by hit desc, register_time desc
 	</select>
 	
 	<select id="searchListBySubject" parameterType="map" resultMap="article">
-	select article_no,user_id,subject,content, hit, register_time 
+	select article_no,user_id,subject,content, hit, register_time ,category , contentId
 from board 
 where subject like concat('%',#{subject},'%')
 order by hit desc, register_time desc
@@ -32,7 +35,7 @@ order by hit desc, register_time desc
 	</select>
 	
 	<select id="viewArticle" parameterType="int" resultMap="article">
-		select article_no,user_id,subject,content, hit, register_time 
+		select article_no,user_id,subject,content, hit, register_time ,category , contentId
 		from board 
 		where article_no = #{articleNo}
 	</select>
@@ -42,6 +45,11 @@ order by hit desc, register_time desc
 	<update id="updateHit" parameterType="int">
 		update board
 		set hit = hit + 1
+		where article_no = #{articleNo}
+	</update>
+	<update id="updateRecomment" parameterType="int">
+		update board
+		set recomment = recomment + 1
 		where article_no = #{articleNo}
 	</update>
 	

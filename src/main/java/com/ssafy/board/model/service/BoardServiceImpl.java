@@ -53,6 +53,11 @@ public class BoardServiceImpl implements BoardService {
 		boardMapper.updateHit(articleNo);		
 	}
 
+	@Override
+	public void updateRecomment(int articleNo) {
+		boardMapper.updateRecomment(articleNo);
+	}
+
 	
 
 }
