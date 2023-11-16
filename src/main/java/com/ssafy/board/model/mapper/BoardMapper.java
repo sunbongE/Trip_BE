@@ -12,7 +12,7 @@ public interface BoardMapper {
 
 	void registerArticle(BoardDto boardDto);
 
-	List<BoardDto> searchListAll(Map<String, Object> param);
+	List<BoardDto> searchListAll(Map<String, Object> param); // 페이지네이션 정보 포함한 파라미터.
 	// 페이지네이션 관련
 	int getTotalArticleCount(Map<String, Object> param) throws SQLException;
 

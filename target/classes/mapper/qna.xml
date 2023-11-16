@@ -12,6 +12,17 @@
 		<result column = "register_time" property= "registerTime"/>
 	</resultMap>
 	
+	<sql id="search">
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				 subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				 ${key} = #{word}
+			</if>
+		</if>
+	</sql>
+	
 	<insert id="register" parameterType="qnaDto">
     INSERT INTO qna (user_id, subject, content, open, register_time)
     VALUES (#{userId}, #{subject}, #{content}, #{open}, now())
@@ -38,7 +49,10 @@
 	</select>
 	
 	<select id="searchAll" parameterType="map" resultMap="qna" >
-		select * from qna;
+		select * from qna
+		<include refid="search"></include>
+	order by register_time desc
+	limit #{start}, #{listsize}
 	</select>
 	
 	<select id="searchByUserId" parameterType="map" resultMap="qna">
@@ -52,5 +66,13 @@
 	    SELECT id, user_id, subject, content, open, register_time 
 	    FROM qna
 	    WHERE subject LIKE CONCAT('%', #{subject}, '%')
+	</select>
+	
+	<select id="getTotalArticleCount" parameterType="map" resultType="int">
+		select count(article_no)
+		from board
+		<where>
+			<include refid="search"></include>
+		</where>
 	</select>
 </mapper>

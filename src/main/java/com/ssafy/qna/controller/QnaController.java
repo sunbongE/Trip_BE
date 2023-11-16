@@ -1,6 +1,7 @@
 package com.ssafy.qna.controller;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,13 +23,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.qna.model.QnaDto;
+import com.ssafy.qna.model.QnaListDto;
 import com.ssafy.qna.model.service.QnaService;
 import com.ssafy.user.controller.UserContoller;
 import com.ssafy.util.BoardUtil;
 
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -50,8 +56,7 @@ public class QnaController {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			}
 		qnaService.register(qnaDto);
-		List<QnaDto> list = qnaService.searchAll();
-		return new ResponseEntity<List<QnaDto>>(list, HttpStatus.OK);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 //	void update(QnaDto qnaDto) throws SQLException;
@@ -64,13 +69,7 @@ public class QnaController {
 			}
 		try {
 			qnaService.update(qnaDto);
-			System.out.println(qnaDto);
-			List<QnaDto> list = qnaService.searchAll();
-			if (list != null && !list.isEmpty()) {
-				return ResponseEntity.status(HttpStatus.OK).body(list);
-			} else {
-				return new ResponseEntity<List>(Collections.EMPTY_LIST, HttpStatus.OK);
-			}
+			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
 			return exceptionHandling(e);
 		}
@@ -108,15 +107,13 @@ public class QnaController {
 	
 //	List<QnaDto> searchAll() throws SQLException;
 	@GetMapping("/list")
-	protected ResponseEntity<?> searchAll(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-		List<QnaDto> list = qnaService.searchAll();
+	protected ResponseEntity<?> searchAll(@RequestParam @ApiParam(value = "문의글을 얻기위한 부가정보.", required = true) Map<String, String> map) throws SQLException {
 		try {
+			QnaListDto list = qnaService.searchAll(map);
 
-			if (list != null && !list.isEmpty()) {
-				return ResponseEntity.status(HttpStatus.OK).body(list);
-			} else {
-				return new ResponseEntity<List>(Collections.EMPTY_LIST, HttpStatus.NO_CONTENT);
-			}
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			return ResponseEntity.ok().headers(header).body(list);
 		} catch (Exception e) {
 			return exceptionHandling(e);
 		}

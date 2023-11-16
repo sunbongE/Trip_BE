@@ -2,6 +2,7 @@ package com.ssafy.qna.model.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,7 +15,12 @@ public interface QnaMapper {
 	void deleteById(int id) throws SQLException;
 	
 	QnaDto findById(int id) throws SQLException;
-	List<QnaDto> searchAll() throws SQLException;
+	
+	
+	List<QnaDto> searchAll(Map<String, Object> param) throws SQLException;// 페이지네이션 정보 포함한 파라미터.
+	int getTotalArticleCount(Map<String, Object> param) throws SQLException;
+	
+	
 	List<QnaDto> searchByUserId(String userId) throws SQLException;
 	List<QnaDto> searchBySubject(String subject) throws SQLException;
 
