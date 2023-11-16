@@ -15,19 +15,37 @@
 		<result column="category" property="category"/>
 		<result column="content_id" property="contentId"/>
 	</resultMap>
-
+	
+	<resultMap type="boardDto" id="viewArticle" extends="article">
+		<collection property="fileInfos" column="article_no" javaType="list" ofType="fileInfoDto" select="fileInfoList"/>
+	</resultMap>
+	
+	<sql id="search">
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				 subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				 ${key} = #{word}
+			</if>
+		</if>
+	</sql>
+	
 	<insert id="registerArticle" parameterType="boardDto">
-	insert into board(user_id, subject, content, register_time,category,contentId)
+	insert into board(user_id, subject, content, register_time,category,content_id)
 	values(#{userId},#{subject}, #{content},now(),#{category},#{contentId})
 	</insert>
 	
 	<select id="searchListAll" parameterType="map" resultMap="article">
-	select article_no,user_id,subject,content, hit, register_time ,category , contentId
-	from board order by hit desc, register_time desc
+	select article_no,user_id,subject,content, hit, register_time ,category , content_id
+	from board 
+	<include refid="search"></include>
+	order by hit desc, register_time desc
+	limit #{start}, #{listsize}
 	</select>
 	
 	<select id="searchListBySubject" parameterType="map" resultMap="article">
-	select article_no,user_id,subject,content, hit, register_time ,category , contentId
+	select article_no,user_id,subject,content, hit, register_time ,category , content_id
 from board 
 where subject like concat('%',#{subject},'%')
 order by hit desc, register_time desc
@@ -35,7 +53,7 @@ order by hit desc, register_time desc
 	</select>
 	
 	<select id="viewArticle" parameterType="int" resultMap="article">
-		select article_no,user_id,subject,content, hit, register_time ,category , contentId
+		select article_no,user_id,subject,content, hit, register_time ,category , content_id
 		from board 
 		where article_no = #{articleNo}
 	</select>
@@ -63,6 +81,15 @@ order by hit desc, register_time desc
 		delete from board
 		where article_no = #{articleNo}
 	</delete>
+	
+	<select id="getTotalArticleCount" parameterType="map" resultType="int">
+		select count(article_no)
+		from board
+		<where>
+			<include refid="search"></include>
+		</where>
+	</select>
+	
 <!-- 
 	<resultMap type="boardDto" id="viewArticle" extends="article">
 		<collection property="fileInfos" column="article_no" javaType="list" ofType="fileInfoDto" select="fileInfoList"/>
