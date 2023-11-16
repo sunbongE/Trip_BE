@@ -65,7 +65,7 @@ public class UserContoller {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<UserDto> login(@RequestBody Map<String, String> map) throws SQLException {
+	public ResponseEntity<UserDto> login(@RequestBody Map<String, String> map) throws Exception {
 		System.out.println("LOGIN REQUEST ID : " + map.get("userId"));
 		UserDto userDto = userService.login(map);
 		System.out.println("LOGIN RESPONSE ID : " + userDto.getUserId());
@@ -100,10 +100,10 @@ public class UserContoller {
 	
 	// 회원 아이디 찾기.
 	@PostMapping("/findUserId")
-	public ResponseEntity<?> findUserId(@RequestBody Map<String, String> request) throws SQLException{
+	public ResponseEntity<?> findUserId(@RequestBody Map<String, String> request) throws Exception{
 		System.out.println("//////////////////////////////////////////////////////////");
 		try {
-			
+			// 아이디 찾는 과정에서 비밀번호 해싱 필요
 			String userId = userService.findUserId(request);
 			if(userId != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(userId);
@@ -116,12 +116,14 @@ public class UserContoller {
 	}
 	// 회원 비번 찾기.
 	@PostMapping("/findUserPwd")
-	public ResponseEntity<?> findUserPwd(@RequestBody Map<String, String> request) throws SQLException{
+	public ResponseEntity<?> findUserPwd(@RequestBody Map<String, String> request) throws Exception{
 		try {
-			
-			System.out.println(request);
+			// 조건에 따른 PWD 찾기
 			String userPwd = userService.findUserPwd(request);
+			
 			if(userPwd != null) {
+				// null 이 아니라면 조건을 통과하였으므로, 임시 비밀번호를 생성한 후 리턴한다.
+				userPwd = userService.generateTempPassword(request.get("userId"));
 				return ResponseEntity.status(HttpStatus.OK).body(userPwd);
 			}else {
 				return new ResponseEntity<>("일치하는 회원이 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -131,89 +133,8 @@ public class UserContoller {
 		}
 	}
 	
-	
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-//	
-//	// 회원가입 join form 으로 이동시켜준다.
-//	@GetMapping("/join")
-//	public String mvjoin() {
-////		return 
-//		return "";
-//	}
-//	
-//	// 회원가입 진행 후 메인 페이지로 이동한다.
-//	@PostMapping("/join")
-//	public String join(UserDto userDto) throws SQLException {
-//		// TODO : join 시 암호화
-//		userService.join(userDto);
-//		// TODO : 회원가입 완료 후 리턴 매핑- 로그인페이지
-//		return "";
-//	}
-//	
-//	@GetMapping("/login")
-//	public String mvlogin() {
-//		return "index";
-//	}
-//	
-//	@PostMapping("/login")
-//	public String login(@RequestParam Map<String, String> map, @RequestParam(name = "saveid", required = false) String saveid, Model model, HttpSession session, HttpServletResponse response) {
-//		log.debug("login map : {}", map);
-//		try {
-//			// TODO : 로그인 시 암호화
-//			UserDto userDto = userService.login(map);
-//			if(userDto != null) {
-//				session.setAttribute("userinfo", userDto);
-//				// TODO : 로그인 완료 후 리턴 매핑 - 메인페이지
-//				return "";
-//			} else {
-//				model.addAttribute("msg", "아이디 또는 비밀번호 확인 후 다시 로그인하세요!");
-//				return "index";
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			model.addAttribute("msg", "로그인 중 문제 발생!!!");
-//			// TODO : 에러페이지 경로 확인
-//			return "error";
-//		}
-//	}
-//	
-//	@GetMapping("/update")
-//	public String mvupdate() {
-//		// TODO : 회원 수정 페이지 이동
-//		return "";
-//	}
-//	
-//	@PostMapping("/update")
-//	public String update(UserDto userDto, HttpServletRequest request, HttpSession session) throws SQLException {
-//		int result = userService.update(userDto);
-//		
-//		if(result == 0) {
-//			String msg = "수정하는 과정에서 오류가 발생하였습니다.";
-//			request.setAttribute("modifyFailMsg", msg);
-//			// TODO : 에러페이지
-//			return "";
-//		} else {
-//			// TODO : 수정완료 후 이동페이지 - 마이페이지
-//			String userId = userDto.getUserId();
-//			userDto = userService.findByUserId(userId);
-//			session.setAttribute("userinfo", userDto);
-//			return "";
-//		}
-//	}
-//	
-//	@GetMapping("/delete")
-//	public String delete(@RequestParam("userid") String userId, HttpSession session) throws SQLException {
-//		userService.delete(userId);
-//		session.invalidate();
-//		return "/index";
-//	}
-//	
-//	@GetMapping("/logout")
-//	public String logout(HttpSession session) {
-//		session.invalidate();
-//		return "/index";
-//	}
 }

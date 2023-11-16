@@ -18,4 +18,5 @@ public interface UserMapper {
 	UserDto findByUserId(String userId) throws SQLException;
 	String findUserId(Map<String, String> map);
 	String findUserPwd(Map<String, String> map);
+	int updatePasswordInfo(Map<String, String> map) throws Exception;
 }

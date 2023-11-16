@@ -13,15 +13,18 @@
 		<result column="user_sido_id" property="userSidoId"/>
 		<result column="user_gu_id" property="userGuId"/>
 		<result column="join_date" property="joinDate"/>
+		<result column="salt" property="salt"/>
+		<result column="grade_id" property="gradeId"/>
+		<result column="token" property="token"/>
 	</resultMap>
 	
 	<insert id="join" parameterType="userDto">
-    INSERT INTO members (user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date)
-    VALUES (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, #{birth}, #{userSidoId}, #{userGuId}, now())
+    INSERT INTO members (user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, salt, grade_id, token)
+    VALUES (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, #{birth}, #{userSidoId}, #{userGuId}, now(), #{salt}, #{gradeId}, #{token})
 	</insert>
 	
 	<select id="login" parameterType="map" resultMap="user">
-    select user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date
+    select user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, salt, grade_id, token
 		from members
 		where user_id=#{userId} and user_password = #{userPassword}
 	</select>
@@ -48,8 +51,8 @@
     	WHERE user_id= #{userId}
 	</delete>
 	
-	<select id="findByUserId" parameterType="map" resultMap="user">
-		select user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date
+	<select id="findByUserId" parameterType="String" resultMap="user">
+		select user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, salt, grade_id, token
 		from members
 		where user_id=#{userId}
 	</select>
@@ -57,7 +60,7 @@
 	<select id="findUserId" parameterType="map" resultType="String">
 	select user_id 
 	from members
-	where email_id = #{emailId} and user_password = #{userPassword} and birth = #{birth}
+	where email_id = #{emailId} and birth = #{birth}
 	
 	</select>
 
@@ -67,55 +70,11 @@
 	from members
 	where user_id = #{userId} and email_id = #{emailId} and birth = #{birth}
 	</select>
-<!--
-	<resultMap type="userDto" id="userDto">
-		<result column="user_id" property="userId"/>
-		<result column="user_name" property="userName"/>
-		<result column="user_password" property="userPassword"/>
-		<result column="gender" property="gender"/>
-		<result column="birthdate" property="birthdate"/>
-		<result column="phone" property="phone"/>
-		<result column="email_id" property="emailId"/>
-		<result column="email_domain" property="emailDomain"/>
-		<result column="salt" property="salt"/>
-		<result column="grade" property="grade"/>
-	</resultMap>
 	
-	<insert id="join" parameterType="userDto">
-    INSERT INTO user (user_id, user_name, user_password, gender, birthdate, phone, email_id, email_domain, salt, grade)
-    VALUES (#{userId}, #{userName}, #{userPassword}, #{gender}, #{birthdate}, #{phone}, #{emailId}, #{emailDomain}, #{salt}, #{grade})
-	</insert>
-	
-	<select id="login" parameterType="map" resultType="userDto">
-    SELECT * FROM user
-    WHERE user_id = #{userId} AND user_password = #{userPassword}
-	</select>
-	
-	<update id="update" parameterType="userDto">
-		update user
-		<trim prefix="set" suffixOverrides=",">
-			<if test="userPassword != null">user_password = #{userPassword},</if>
-			<if test="userName != null">user_name = #{userName},</if>
-			<if test="emailId != null">email_id = #{emailId},</if>
-			<if test="emailDomain != null">email_domain = #{emailDomain},</if>
-		</trim>
-		where user_id = #{userId}
+	<update id ="updatePasswordInfo" parameterType="map">
+	update members
+	set salt = #{salt}, user_password = #{userPassword}
+	where user_id=#{userId}
 	</update>
-	
-    <select id="checkId" parameterType="String" resultType="int">
-		select count(user_id)
-		from user
-		where user_id = #{userId}
-	</select>
-	
-  	<delete id="delete" parameterType="String">
-    	DELETE FROM user 
-    	WHERE user_id= #{userId}
-	</delete>
-	
-	<select id="findByUserId" parameterType="String" resultMap="userDto">
-		select * from user
-		where user_id=#{userId}
-	</select>
--->
+
 </mapper>
