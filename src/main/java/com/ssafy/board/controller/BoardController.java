@@ -95,8 +95,13 @@ public class BoardController extends HttpServlet {
 	@PutMapping("/modify")
 	protected  ResponseEntity<?> modify(@RequestBody BoardDto boardDto) {
 		try {
+//			 비속어 필터
+			if (boardUtil.filterSlangs(boardDto.getContent())) {
+				System.out.println("비속어 감지");
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
 			boardService.modifyArticle(boardDto);
-			System.out.println(boardDto);
+//			System.out.println(boardDto);
 			List<BoardDto> list = boardService.searchListAll();
 			if (list != null && !list.isEmpty()) {
 				return ResponseEntity.status(HttpStatus.OK).body(list);

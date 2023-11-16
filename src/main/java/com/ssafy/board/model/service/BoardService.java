@@ -20,4 +20,6 @@ public interface BoardService {
 	void deleteArticle(int no);
 
 	void updateHit(int articleNo);
+	
+	void updateRecomment(int articleNo);
 }
