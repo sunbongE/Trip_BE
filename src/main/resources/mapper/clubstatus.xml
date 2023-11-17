@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.club.model.mapper.ClubStatusMapper">
+
+	<resultMap type="clubStatusDto" id ="clubStatus">
+		<result column = "id" property= "id"/>
+		<result column = "from_user_id" property= "fromUserId"/>
+		<result column = "to_user_id" property= "toUserId"/>
+		<result column = "club_id" property= "clubId"/>
+		<result column = "answer" property= "answer"/>
+	</resultMap>
+
+	<insert id="insertClubStatus" parameterType="clubStatusDto">
+		insert into club_status (from_user_id, to_user_id, club_id)
+		values (#{fromUserId}, #{toUserId},#{clubId})
+	</insert>
+	
+	<select id="searchByToUserId" parameterType="map" resultMap="clubStatus">
+		select * from club_status
+		where to_user_id = #{toUserId}
+	</select>
+	
+	<select id="searchByFromUserId" parameterType="map" resultMap="clubStatus">
+		select * from club_status
+		where from_user_id = #{fromUserId}
+	</select>
+	
+	<delete id="deleteById" parameterType="int">
+		delete from club_status
+		where id=#{id}
+	</delete>
+	
+	<update id="replyToAnswer" parameterType="map">
+		update club_status
+		set answer = #{answer}
+		where id= #{id}
+	</update>
+	
+	<select id="checkTotalCnt" parameterType="int" resultType="map">
+		select total_cnt,
+		(select count(*) from club_member where club_id=#{id}) as people
+		from club
+		where id=#{id}
+	</select>
+	
+	<select id="findById" parameterType="int" resultMap="clubStatus">
+		select * from club_status
+		where id=#{id}
+	</select>
+</mapper>

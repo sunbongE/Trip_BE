@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.club.model.mapper.ClubMapper">
+	<resultMap type="clubDto" id="club">
+		<result column="id" property="id"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>		
+		<result column="user_id" property="userId"/>		
+		<result column="plan_id" property="planId"/>
+		<result column="status" property="status"/>
+		<result column="register_time" property="registerTime"/>
+		<result column="total_cnt" property="totalCnt"/>
+		<result property="people" column="people" />
+	</resultMap>
+	
+	
+	<resultMap id="peopleResultMap" type="java.lang.Integer">
+	    <result property="people" column="people" />
+	</resultMap>
+	
+	<resultMap type="clubMemberDto" id="clubMember">
+		<result column="id" property="id"/>		
+		<result column="club_id" property="clubId"/>		
+		<result column="user_id" property="userId"/>
+	</resultMap>	
+
+	<insert id="registClub" parameterType="clubDto">
+		insert into club (subject, content, user_id, plan_id, status, register_time, total_cnt)
+		values (#{subject}, #{content}, #{userId}, #{planId}, #{status}, now(), #{totalCnt})
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="initClubMember" parameterType="map">
+		insert into club_member (club_id, user_id)
+		values (#{clubId}, #{userId})
+	</insert>
+	
+	<insert id="addClubMember" parameterType="clubDto">
+		insert into club_member (club_id, user_id)
+		values (#{clubId}, #{userId})
+	</insert>
+	
+	<update id="updateClub" parameterType="clubDto">
+		update club
+		<trim prefix="set" suffixOverrides=",">
+			<if test="subject != null">subject = #{subject},</if>
+			<if test="status != null">status = #{status},</if>
+			<if test="content != null">content = #{content}</if>
+		</trim>
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteClub" parameterType="int">
+		delete from club where id=#{id}
+	</delete>
+	
+	<select id="searchClubAll" parameterType="map" resultMap="club">
+		select id, subject, content, user_id, plan_id, status, register_time, total_cnt,
+		(select count(*) from club_member where club_id=club.id) as people
+		from club
+	</select>
+	
+	<select id="findClubById" parameterType="int" resultMap="club">
+		select id, subject, content, user_id, plan_id, status, register_time, total_cnt,
+		(select count(*) from club_member where club_id=#{id}) as people
+		from club
+		where id=#{id}
+	</select>
+	
+	<select id="searchClubMemberByClubId" parameterType="map" resultMap="clubMember">
+		select * 
+		from club_member 
+		where club_id = #{clubId}
+	</select>
+	
+	<delete id="deleteClubMemberById" parameterType="map">
+		delete from club_member
+		where id=#{id}
+	</delete>
+	
+	<select id="searchMyClubs" parameterType="map" resultMap="club">
+		SELECT club.id, club.subject, club.plan_id, club.content, club.user_id, total_cnt, register_time, status,
+		(select count(*) from club_member where club_id=club.id) as people
+		FROM club
+		INNER JOIN club_member ON club.id = club_member.club_id
+		WHERE club_member.user_id = #{userId};
+	</select>
+</mapper>
