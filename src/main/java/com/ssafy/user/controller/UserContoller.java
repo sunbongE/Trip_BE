@@ -1,16 +1,12 @@
 package com.ssafy.user.controller;
 
-import java.sql.SQLException; 
+import java.sql.SQLException;  
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.user.model.UserDto;
 import com.ssafy.user.model.service.UserService;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,10 +62,7 @@ public class UserContoller {
 	
 	@PostMapping("/login")
 	public ResponseEntity<UserDto> login(@RequestBody Map<String, String> map) throws Exception {
-		System.out.println("LOGIN REQUEST ID : " + map.get("userId"));
 		UserDto userDto = userService.login(map);
-		System.out.println("LOGIN RESPONSE ID : " + userDto.getUserId());
-		System.out.println(userDto);
 		return new ResponseEntity<>(userDto, HttpStatus.OK);
 	}
 	

@@ -24,7 +24,7 @@
 	</insert>
 	
 	<select id="login" parameterType="map" resultMap="user">
-    select user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, salt, grade_id, token
+    select user_id, user_name, grade_id, token
 		from members
 		where user_id=#{userId} and user_password = #{userPassword}
 	</select>
