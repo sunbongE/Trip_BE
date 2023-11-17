@@ -73,8 +73,9 @@ public class UserContoller {
 		
 		try {
 			UserDto loginUser = userService.login(map);
-				System.out.println("////////////////////////////////////////");
+			System.out.println("////////////////////////////////////////");
 			System.out.println(map);
+			System.out.println(loginUser);
 			System.out.println("////////////////////////////////////////");
 			if(loginUser != null) {
 				System.out.println(loginUser+" /?????");
@@ -84,14 +85,13 @@ public class UserContoller {
 				log.debug("refresh token : {}", refreshToken);
 				
 //				발급받은 refresh token을 DB에 저장.
-//				System.out.println(loginUser.getUserId());
-//				System.out.println("////////////////////////////////////////");
+				System.out.println(loginUser.getUserId());
+				System.out.println("////////////////////////////////////////");
 				userService.saveRefreshToken(loginUser.getUserId(), refreshToken);
 				
 //				JSON으로 token 전달.
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
-				
 				status = HttpStatus.CREATED;
 			} else {
 				resultMap.put("message", "아이디 또는 패스워드를 확인해주세요.");

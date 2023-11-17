@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
 		// 1. id 를 통해 유저정보를 가져와서
 		UserDto userDto = userMapper.findByUserId(userId);
 		System.out.println("userDto"+userDto);
+		System.out.println("이소금은 뭐니"+userDto.getSalt());
 		// 2. 해당 salt 로 input pw를 해싱 후
 		String hashedInputUserPassword = getHashedPasswordWithSalt(inputUserPassword, userDto.getSalt());
 		// 3. 가져온 정보의 pw 와 비교
@@ -134,7 +135,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void saveRefreshToken(String userId, String refreshToken) throws Exception {
-		System.out.println(userId);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userId", userId);
 		map.put("token", refreshToken);
