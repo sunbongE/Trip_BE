@@ -29,4 +29,10 @@
 	where id = #{id}
 	
 	</delete>
+	
+	<insert id="friendRequest" parameterType="map">
+	insert into friendship(from_user_id,to_user_id)
+	values(#{fromUserId},#{toUserId})
+	</insert>
+	
 </mapper>

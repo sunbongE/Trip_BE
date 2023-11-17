@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.alarm.model.mapper.AlarmMapper">
+
+	<resultMap type="alarmDto" id="alarm">
+		<result column="id" property="id"/>
+		<result column="type" property="type"/>
+		<result column="from_user_id" property="fromUserId"/>
+		<result column="to_user_id" property="toUserId"/>
+		<result column="register_time" property="registerTime"/>
+		<result column="is_read" property="isRead"/>
+	</resultMap>
+	
+	<select id="getAlarm" parameterType="string" resultMap="alarm">
+		select id,type,from_user_id,to_user_id,register_time
+		from alarm
+		where to_user_id = #{userId} and is_read = 0
+	</select>
+	
+	<insert id="sendAlarm" parameterType="alarmDto">
+		insert into alarm(type, from_user_id, to_user_id)
+		values(#{type}, #{fromUserId}, #{toUserId})
+	</insert>
+ 
+ <delete id="deleteAlarm" parameterType="int">
+ 	delete from alarm
+ 	where id = #{id}
+ </delete>
+ 
+ <update id="readAlarm" parameterType="int">
+ 	update alarm set is_read = 1 where id = #{id};
+ </update>
+ 
+</mapper>
