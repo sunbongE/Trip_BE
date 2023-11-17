@@ -29,8 +29,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
 //@Controller
+@RestController
 @RequestMapping("/user")
 @CrossOrigin("*")
 @Slf4j
