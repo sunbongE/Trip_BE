@@ -13,9 +13,9 @@
 
 
 	<select id="getReceived" parameterType="string" resultMap="friendship">
-	select id, from_user_id,to_user_id
+	select id, from_user_id,to_user_id, status
 	from friendship
-	where to_user_id = #{userId} and status = 203
+	where to_user_id = #{userId}  
 	</select>
 
 	<update id="answer" parameterType="friendshipDto">
@@ -29,4 +29,10 @@
 	where id = #{id}
 	
 	</delete>
+	
+	<insert id="friendRequest" parameterType="map">
+	insert into friendship(from_user_id,to_user_id)
+	values(#{fromUserId},#{toUserId})
+	</insert>
+	
 </mapper>

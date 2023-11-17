@@ -54,6 +54,7 @@ public class FriendshipController {
 	
 	@PostMapping("/friendrequest")
 	public ResponseEntity<?> friendRequest(@RequestBody Map<String, String> map){
+		log.debug("map = {}",map);
 		try {
 			friendshipService.friendRequest(map);
 			return new ResponseEntity<Void>(HttpStatus.OK);
