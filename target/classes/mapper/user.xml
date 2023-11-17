@@ -52,7 +52,7 @@
 	</delete>
 	
 	<select id="findByUserId" parameterType="String" resultMap="user">
-		select user_id, user_name, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, grade_id 
+		select user_id, user_name,user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, grade_id 
 		from members
 		where user_id=#{userId}
 	</select>
@@ -75,6 +75,24 @@
 	update members
 	set salt = #{salt}, user_password = #{userPassword}
 	where user_id=#{userId}
+	</update>
+
+	<update id="saveRefreshToken" parameterType="map">
+		update members
+		set token = #{token}
+		where user_id = #{userId}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from members
+		where user_id = #{userId}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update members
+		set token = #{token, jdbcType=VARCHAR}
+		where user_id = #{userId}
 	</update>
 
 </mapper>
