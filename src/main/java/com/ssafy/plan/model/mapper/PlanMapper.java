@@ -17,6 +17,7 @@ public interface PlanMapper {
 	void deletePlanById(int id) throws SQLException;
 	PlanDto findPlanById (int id) throws SQLException;
 	List<PlanDto> selectPlanAll () throws SQLException;
+	List<PlanDto> searchPlanByUserId(String userId) throws SQLException;
 	
 	void registPlanInfo(PlanInfoDto planInfoDto) throws SQLException;
 	void deletePlanInfo(Map<String, String> map) throws SQLException;

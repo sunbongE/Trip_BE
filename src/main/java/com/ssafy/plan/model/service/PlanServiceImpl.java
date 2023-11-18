@@ -99,6 +99,11 @@ public class PlanServiceImpl implements PlanService {
 		return dto;
 	}
 
+	@Override
+	public List<PlanDto> searchPlanByUserId(String userId) throws SQLException {
+		return planMapper.searchPlanByUserId(userId);
+	}
+
 	/*
 	 * public ReturnType 동행찾기로_슛(PlanTo동행슛DTO){
 	 * 	동행서비스.sharePlanTo동행(dto)

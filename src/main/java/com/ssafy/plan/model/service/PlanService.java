@@ -17,4 +17,5 @@ public interface PlanService {
 	void updatePlan(PlanUpdateRequestDto dto) throws SQLException;
 	List<PlanSearchResponseDto> searchAll() throws SQLException;
 	PlanSearchResponseDto searchPlanById(int id) throws SQLException;
+	List<PlanDto> searchPlanByUserId(String userId) throws SQLException;
 }

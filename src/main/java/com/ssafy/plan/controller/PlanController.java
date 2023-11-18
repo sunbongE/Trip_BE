@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanRegisterRequestDto;
 import com.ssafy.plan.model.PlanSearchResponseDto;
 import com.ssafy.plan.model.PlanUpdateRequestDto;
-import com.ssafy.plan.model.mapper.PlanMapper;
 import com.ssafy.plan.model.service.PlanService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +67,14 @@ public class PlanController {
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 		return ResponseEntity.ok().headers(header).body(dto);
+	}
+	
+	@GetMapping("/search/my/{userId}")
+	public ResponseEntity<?> searchPlanByUserId(@PathVariable String userId) throws Exception {
+		List<PlanDto> list = planService.searchPlanByUserId(userId);
+		HttpHeaders header = new HttpHeaders();
+		header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		return ResponseEntity.ok().headers(header).body(list);
 	}
 	
 	@DeleteMapping("/delte/{id}")
