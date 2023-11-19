@@ -43,6 +43,10 @@
 		where id=#{id}
 	</select>
 	
+	<select id="searchPlanByUserId" parameterType="map" resultMap="plan">
+		select * from plan
+		where user_id = #{userId}
+	</select>
 	
 	
 	<insert id="registPlanInfo" parameterType="map">
