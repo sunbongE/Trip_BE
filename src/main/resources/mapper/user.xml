@@ -52,7 +52,7 @@
 	</delete>
 	
 	<select id="findByUserId" parameterType="String" resultMap="user">
-		select user_id, user_name,user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, grade_id ,salt
+		select user_id, user_name,user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, grade_id ,salt,token
 		from members
 		where user_id=#{userId}
 	</select>
