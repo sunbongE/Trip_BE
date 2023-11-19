@@ -248,6 +248,24 @@ public class UserContoller {
 		}
 	}
 	
+	@ApiOperation(value = "아이디 중복확인.", notes = "회원가입 시 아이디 중복확인에 사용.")
+	@PostMapping("/checkId")
+	public ResponseEntity<?> checkId(@RequestBody String userId){
+		try {
+			boolean notValid = userService.checkId(userId);
+			if(notValid) {
+				
+				return new ResponseEntity<Void>(HttpStatus.CONFLICT); 
+			}else {
+				return new ResponseEntity<Void>(HttpStatus.OK);
+				
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
+	
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
