@@ -1,5 +1,6 @@
 package com.ssafy.board.model;
 
+import java.io.Serializable; 
 import java.util.List;
 
 import io.swagger.annotations.ApiModelProperty;

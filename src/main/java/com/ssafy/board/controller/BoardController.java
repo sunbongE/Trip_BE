@@ -1,6 +1,6 @@
 package com.ssafy.board.controller;
 
-import java.io.File;
+import java.io.File;  
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -22,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,17 +51,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j // log.사용할 때
 public class BoardController extends HttpServlet {
 
+	ServletContext servletContext;
 	BoardService boardService;
 	BoardUtil boardUtil = BoardUtil.getInstance();
 
 	@Autowired
-	public BoardController(BoardService boardService) {
+	public BoardController(BoardService boardService,ServletContext servletContext) {
 		super();
 		this.boardService = boardService;
+		this.servletContext = servletContext;
 	}
 
-	@PostMapping("/regist")
-	protected ResponseEntity<?> regist(@RequestPart BoardDto boardDto,@RequestPart(value="upfile") MultipartFile[] files,ServletContext servletContext) throws IllegalStateException, IOException {
+	@PostMapping(value="/regist")
+	protected ResponseEntity<?> regist( @RequestPart("boardDto") BoardDto boardDto, @RequestPart(value="upfile",required = false) MultipartFile[] files) throws IllegalStateException, IOException {
+		System.out.println(boardDto);
+		System.out.println(files);
+		System.out.println("??");
+//		return new ResponseEntity<Void>(HttpStatus.OK);
 		try {
 //			 비속어 필터
 			if (boardUtil.filterSlangs(boardDto.getContent())) {
