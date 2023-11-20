@@ -105,11 +105,12 @@ public class UserServiceImpl implements UserService {
 		UserDto userDto = userMapper.findByUserId(userId);
 
 		String inputUserPassword = map.get("userPassword");
-
+		System.out.println(userDto.getSalt());
 		log.debug("\t Password user inputed : {}" , inputUserPassword);
 		// 2. 해당 salt 로 input pw를 해싱 후
 		String hashedInputUserPassword = getHashedPasswordWithSalt(inputUserPassword, userDto.getSalt());
-		
+		System.out.println(hashedInputUserPassword);
+		System.out.println(userDto.getUserPassword());
 		if(hashedInputUserPassword.equals(userDto.getUserPassword())) {
 			return userId;
 		} 

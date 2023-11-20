@@ -205,7 +205,9 @@ public class UserContoller {
 		try {
 			// 아이디 찾는 과정에서 비밀번호 해싱 필요
 			String userId = userService.findUserId(request);
-			if(userId != null) {
+			if(userId != null && !userId.equals("")) {
+				System.out.println(userId);
+				
 			return ResponseEntity.status(HttpStatus.OK).body(userId);
 			}else {
 				return new ResponseEntity<>("일치하는 회원이 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
