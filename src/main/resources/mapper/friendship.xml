@@ -35,4 +35,11 @@
 	values(#{fromUserId},#{toUserId})
 	</insert>
 	
+	<select id="searchByStatus" parameterType="map" resultMap="friendship">
+		select * 
+		from friendship 
+		where (status=#{status} and from_user_id = #{userId}) 
+		or (status=#{status} and to_user_id = #{userId});
+
+	</select>
 </mapper>

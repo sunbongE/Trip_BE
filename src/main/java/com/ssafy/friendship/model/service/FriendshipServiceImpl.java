@@ -1,6 +1,7 @@
 package com.ssafy.friendship.model.service;
 
-import java.util.List; 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.alarm.model.AlarmDto;
 import com.ssafy.alarm.model.mapper.AlarmMapper;
 import com.ssafy.friendship.model.FriendshipDto;
+import com.ssafy.friendship.model.FriendshipResponseDto;
 import com.ssafy.friendship.model.mapper.FriendshipMapper;
 
 @Service
@@ -64,6 +66,22 @@ public class FriendshipServiceImpl implements FriendshipService{
 	public void deleteById(int id) {
 		friendshipMapper.deleteById(id);
 		
+	}
+
+	@Override
+	public List<FriendshipResponseDto> searchByStatus(Map<String ,Object> map) throws Exception {
+		List<FriendshipDto> list = friendshipMapper.searchByStatus(map);
+		List<FriendshipResponseDto> result = new LinkedList<>();
+		for(FriendshipDto dto : list) {
+			FriendshipResponseDto resDto = new FriendshipResponseDto();
+			resDto.setId(dto.getId());
+			resDto.setUserId(dto.getFromUserId().equals(map.get("userId")) ? dto.getToUserId() : dto.getFromUserId());
+			resDto.setSinceDate(dto.getSinceDate());
+			resDto.setStatus(dto.getStatus());
+			result.add(resDto);
+		}
+		
+		return result;
 	}
 
 }
