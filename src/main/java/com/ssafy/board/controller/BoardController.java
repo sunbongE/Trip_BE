@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,36 +60,41 @@ public class BoardController extends HttpServlet {
 	}
 
 	@PostMapping("/regist")
-	protected ResponseEntity<?> regist(@RequestBody BoardDto boardDto,@RequestParam("upfile") MultipartFile[] files,ServletContext servletContext) throws IllegalStateException, IOException {
-			
-		// 파일 저장을 위한 로직..
-		String realPath = servletContext.getRealPath("/upload");
-		String today = new SimpleDateFormat("yymmdd").format(new Date());
-		String saveFolder = realPath+File.separator+today;
-		File folder = new File(saveFolder);
-		if(!folder.exists()) {
-			folder.mkdirs();
-		}
-		List<FileInfoDto> fileInfos = new ArrayList<FileInfoDto>()	;
-		for (MultipartFile mfile : files) {
-			FileInfoDto fileInfoDto = new FileInfoDto();
-			String originalFileName = mfile.getOriginalFilename();
-			if(!originalFileName.isEmpty()) {
-				String saveFileName = UUID.randomUUID().toString()+originalFileName.substring(originalFileName.lastIndexOf('.'));
-				fileInfoDto.setSaveFolder(today);
-				fileInfoDto.setOriginalFile(originalFileName);
-				fileInfoDto.setSaveFile(saveFileName);
-				mfile.transferTo(new File(folder, saveFileName));
-			}
-			fileInfos.add(fileInfoDto);
-		}
-		
+	protected ResponseEntity<?> regist(@RequestPart BoardDto boardDto,@RequestPart(value="upfile") MultipartFile[] files,ServletContext servletContext) throws IllegalStateException, IOException {
 		try {
-			System.out.println(boardDto);
 //			 비속어 필터
 			if (boardUtil.filterSlangs(boardDto.getContent())) {
 				System.out.println("비속어 감지");
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
+
+//			FileUpload 관련 설정.
+			log.debug("MultipartFile.isEmpty : {}", files[0].isEmpty());
+			if (!files[0].isEmpty()) {
+				String realPath = servletContext.getRealPath("/upload");
+//				String realPath = servletContext.getRealPath("/resources/img");
+				String today = new SimpleDateFormat("yyMMdd").format(new Date());
+				String saveFolder = realPath + File.separator + today;
+				log.debug("저장 폴더 : {}", saveFolder);
+				File folder = new File(saveFolder);
+				if (!folder.exists())
+					folder.mkdirs();
+				List<FileInfoDto> fileInfos = new ArrayList<FileInfoDto>();
+				for (MultipartFile mfile : files) {
+					FileInfoDto fileInfoDto = new FileInfoDto();
+					String originalFileName = mfile.getOriginalFilename();
+					if (!originalFileName.isEmpty()) {
+						String saveFileName = UUID.randomUUID().toString()
+								+ originalFileName.substring(originalFileName.lastIndexOf('.'));
+						fileInfoDto.setSaveFolder(today);
+						fileInfoDto.setOriginalFile(originalFileName);
+						fileInfoDto.setSaveFile(saveFileName);
+						log.debug("원본 파일 이름 : {}, 실제 저장 파일 이름 : {}", mfile.getOriginalFilename(), saveFileName);
+						mfile.transferTo(new File(folder, saveFileName));
+					}
+					fileInfos.add(fileInfoDto);
+				}
+				boardDto.setFileInfos(fileInfos);
 			}
 			boardService.registerArticle(boardDto);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
