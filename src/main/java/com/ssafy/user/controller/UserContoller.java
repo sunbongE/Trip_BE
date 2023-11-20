@@ -55,15 +55,14 @@ public class UserContoller {
 //	}
 	
 	@PostMapping("/join")
-	public ResponseEntity<UserDto> join(@RequestBody UserDto userDto) throws SQLException {
+	public ResponseEntity<Void> join(@RequestBody UserDto userDto) throws SQLException {
 //		System.out.println(userDto.getUserId());
 		userService.join(userDto);
 		
 		String userId = userDto.getUserId();
 		log.debug("JOINED ID {} ", userId);
-		UserDto joined = userService.findByUserId(userId);
 		
-		return new ResponseEntity<>(joined, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PostMapping("/login")
@@ -78,7 +77,6 @@ public class UserContoller {
 //			System.out.println(loginUser);
 //			System.out.println("////////////////////////////////////////");
 			if(loginUser.getUserId() != null && !loginUser.getUserId().equals("")) {
-//				System.out.println(loginUser+" /?????");
 				
 				String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
 				String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
