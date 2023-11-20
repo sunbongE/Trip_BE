@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.friendship.model.FriendshipDto;
+import com.ssafy.friendship.model.FriendshipResponseDto;
 
 public interface FriendshipService {
 	List<FriendshipDto> getReceived(String userId);
@@ -19,4 +20,6 @@ public interface FriendshipService {
 	
 	void deleteById(int id);
 	void answer(FriendshipDto friendshipDto);
+	
+	List<FriendshipResponseDto> searchByStatus(Map<String ,Object> map) throws Exception;
 }

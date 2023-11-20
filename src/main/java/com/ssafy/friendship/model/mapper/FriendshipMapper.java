@@ -22,4 +22,5 @@ public interface FriendshipMapper {
 //	void cutById(int id);
 	void deleteById(int id);
 	void answer(FriendshipDto friendshipDto);
+	List<FriendshipDto> searchByStatus(Map<String ,Object> map);
 }
