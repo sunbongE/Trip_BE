@@ -254,10 +254,9 @@ public class UserContoller {
 		try {
 			boolean notValid = userService.checkId(userId);
 			if(notValid) {
-				
-				return new ResponseEntity<Void>(HttpStatus.CONFLICT); 
+				return ResponseEntity.status(HttpStatus.OK).body(false); 
 			}else {
-				return new ResponseEntity<Void>(HttpStatus.OK);
+				return ResponseEntity.status(HttpStatus.OK).body(true); 
 				
 			}
 		} catch (Exception e) {

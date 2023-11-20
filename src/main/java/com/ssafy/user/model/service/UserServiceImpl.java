@@ -83,11 +83,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean checkId(String userId) throws SQLException {
-		boolean result = true;
-		int cur = userMapper.checkId(userId);
-		System.out.println(cur);
-		if(cur==1) { // 중복된경우.
-			result=false;
+//		System.out.println("넘어가는애 ==> "+userId);
+		boolean result = false;
+		String cur = userMapper.checkId(userId);
+//		System.out.println(cur);
+		if(cur == null) { // 중복된경우.
+			result=true;
 		}
 		return result;
 	}

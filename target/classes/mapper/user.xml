@@ -39,12 +39,12 @@
 		</trim>
 		where user_id = #{userId}
 	</update>
-	
-    <select id="checkId" parameterType="String" resultType="int">
-		select count(user_id)
-		from members
-		where user_id = #{userId}
-	</select>
+
+	 <select id="checkId" parameterType="string" resultType="string">
+	 select user_id
+	 from members
+	 where user_id = ${userId}
+	 </select>
 	
   	<delete id="delete" parameterType="String">
     	DELETE FROM members 

@@ -18,7 +18,7 @@ public interface UserMapper {
 	
 	void delete(String userId) throws SQLException;
 	
-	int checkId(String userId) throws SQLException;
+	String checkId(String userId) throws SQLException;
 	
 	UserDto findByUserId(String userId) throws SQLException;
 	
