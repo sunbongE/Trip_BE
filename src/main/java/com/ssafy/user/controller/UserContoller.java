@@ -252,11 +252,11 @@ public class UserContoller {
 	@PostMapping("/checkId")
 	public ResponseEntity<?> checkId(@RequestBody String userId){
 		try {
-			boolean notValid = userService.checkId(userId);
-			if(notValid) {
-				return ResponseEntity.status(HttpStatus.OK).body(false); 
-			}else {
+			boolean isValid = userService.checkId(userId);
+			if(isValid) {
 				return ResponseEntity.status(HttpStatus.OK).body(true); 
+			}else {
+				return ResponseEntity.status(HttpStatus.OK).body(false); 
 				
 			}
 		} catch (Exception e) {
