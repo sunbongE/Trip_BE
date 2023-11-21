@@ -16,4 +16,5 @@ public interface AttractionService {
 	List<AttractionInfoDto> searchTourinfo(int sidoCode, int gugunCode, int contentTypeId);
 	List<AttractionInfoDto> searchByTitle(String title);
 	List<AttractionInfoDto> searchByPoint(Map<String, Object> map);
+	String getDescription(int contentId);
 }

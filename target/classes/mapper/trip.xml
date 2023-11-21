@@ -83,7 +83,10 @@
  	FROM attraction_info
 	WHERE title LIKE CONCAT('%',#{title},'%') and content_type_id in (12)
 	ORDER BY ST_DISTANCE_Sphere(POINT(longitude, latitude), POINT(#{longitude}, #{latitude}))
-	LIMIT 5;
+	LIMIT 6;
 	</select>
 	
+	<select id="getDescription" parameterType="int" resultType="String">
+		select overview from attraction_description where content_id=#{contentId};
+	</select>
 </mapper>

@@ -114,6 +114,21 @@ public class TripController extends HttpServlet {
 		}
 	}
 	
+	@GetMapping("/getDescription/{contentId}")
+	protected ResponseEntity<?> getDescription(@PathVariable int contentId)throws ServletException, IOException {
+		try {
+			String result = "";
+			result = attractionService.getDescription(contentId);
+			if(result!=null && !result.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.OK).body(result); 
+			}else {
+				return new ResponseEntity(HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

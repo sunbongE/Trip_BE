@@ -30,4 +30,5 @@ public interface AttractionMapper {
 
 	List<AttractionInfoDto> searchByTitle(String title);
 	List<AttractionInfoDto> searchByPoint(Map<String, Object> map);
+	String getDescription(int contentId);
 }

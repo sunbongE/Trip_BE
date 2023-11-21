@@ -47,6 +47,12 @@ public class AttractionServiceImpl implements AttractionService {
 	}
 
 
+	@Override
+	public String getDescription(int contentId) {
+		return attractionMapper.getDescription(contentId);
+	}
+
+
 	
 
 }
