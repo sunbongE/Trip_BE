@@ -122,4 +122,14 @@ public class ClubController {
 		}
 	}
 
+	@PostMapping("/regist/member")
+	public ResponseEntity<?> addClubMember(@RequestBody ClubMemberDto dto) throws SQLException{
+		try {
+			clubService.addClubMember(dto);
+			return new ResponseEntity(HttpStatus.CREATED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

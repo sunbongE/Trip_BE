@@ -41,6 +41,12 @@ public class AttractionServiceImpl implements AttractionService {
 	}
 
 
+	@Override
+	public List<AttractionInfoDto> searchByPoint(Map<String, Object> map) {
+		return attractionMapper.searchByPoint(map);
+	}
+
+
 	
 
 }

@@ -66,6 +66,11 @@ public class ClubServiceImpl implements ClubService{
 	public List<ClubDto> searchMyClubs(String userId) throws SQLException {
 		return clubMapper.searchMyClubs(userId);
 	}
+
+	@Override
+	public void addClubMember(ClubMemberDto dto) throws SQLException {
+		clubMapper.addClubMember(dto);
+	}
 }
 
 	

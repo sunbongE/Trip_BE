@@ -1,6 +1,7 @@
 package com.ssafy.trip.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ssafy.trip.model.AttractionInfoDto;
 import com.ssafy.trip.model.GugunDto;
@@ -14,4 +15,5 @@ public interface AttractionService {
 	List<GugunDto> gugunList(int sidoCode);
 	List<AttractionInfoDto> searchTourinfo(int sidoCode, int gugunCode, int contentTypeId);
 	List<AttractionInfoDto> searchByTitle(String title);
+	List<AttractionInfoDto> searchByPoint(Map<String, Object> map);
 }

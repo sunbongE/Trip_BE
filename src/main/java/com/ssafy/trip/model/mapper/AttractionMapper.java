@@ -29,4 +29,5 @@ public interface AttractionMapper {
 	List<AttractionInfoDto> searchTourinfo(@Param("sidoCode") int sidoCode, @Param("gugunCode") int gugunCode, @Param("contentTypeId") int contentTypeId);
 
 	List<AttractionInfoDto> searchByTitle(String title);
+	List<AttractionInfoDto> searchByPoint(Map<String, Object> map);
 }

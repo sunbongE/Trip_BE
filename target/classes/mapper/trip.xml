@@ -35,7 +35,7 @@
 <!-- 여행지 기본 정보(list) -->
 	<resultMap type="attractionInfoDto" id="info">
 		<result column="content_id" property="contentId"/>
-		<result column="contentType_id" property="contentTypeId"/>
+		<result column="content_type_id" property="contentTypeId"/>
 		<result column="title" property="title"/>
 		<result column="addr1" property="addr1"/>
 		<result column="addr2" property="addr2"/>
@@ -76,6 +76,14 @@
 	select content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image,first_image2,readcount,latitude,longitude,mlevel
 	from attraction_info 
 	where title like concat('%',#{title},'%')
+	</select>
+	
+	<select id="searchByPoint" parameterType="map" resultMap="info">
+	SELECT content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image,first_image2,readcount,latitude,longitude,mlevel 
+ 	FROM attraction_info
+	WHERE title LIKE CONCAT('%',#{title},'%') and content_type_id in (12)
+	ORDER BY ST_DISTANCE_Sphere(POINT(longitude, latitude), POINT(#{longitude}, #{latitude}))
+	LIMIT 5;
 	</select>
 	
 </mapper>

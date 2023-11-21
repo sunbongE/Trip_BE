@@ -24,4 +24,6 @@ public interface ClubService {
 	void deleteClubMemberById(int id) throws SQLException;
 	
 	List<ClubDto> searchMyClubs(String userId) throws SQLException;
+
+	void addClubMember(ClubMemberDto dto) throws SQLException;
 }

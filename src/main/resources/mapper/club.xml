@@ -39,7 +39,7 @@
 		values (#{clubId}, #{userId})
 	</insert>
 	
-	<insert id="addClubMember" parameterType="clubDto">
+	<insert id="addClubMember" parameterType="clubMemberDto">
 		insert into club_member (club_id, user_id)
 		values (#{clubId}, #{userId})
 	</insert>

@@ -1,24 +1,24 @@
 package com.ssafy.trip.controller;
 
-import java.io.IOException; 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.trip.model.AttractionInfoDto;
 import com.ssafy.trip.model.GugunDto;
 import com.ssafy.trip.model.SidoDto;
@@ -98,7 +98,22 @@ public class TripController extends HttpServlet {
 			return exceptionHandling(e);
 		}
 	}
-
+	
+	@PostMapping("/searchByPoint")
+	protected ResponseEntity<?> searchByPoint(@RequestBody Map<String, Object> map) throws ServletException, IOException {
+		List<AttractionInfoDto> list = new ArrayList<AttractionInfoDto>();
+		try {
+			list = attractionService.searchByPoint(map);
+			if(list!=null && !list.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.OK).body(list); 
+			}else {
+				return new ResponseEntity<List>(Collections.EMPTY_LIST, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
