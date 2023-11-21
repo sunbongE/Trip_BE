@@ -17,4 +17,7 @@ public interface AttractionService {
 	List<AttractionInfoDto> searchByTitle(String title);
 	List<AttractionInfoDto> searchByPoint(Map<String, Object> map);
 	String getDescription(int contentId);
+	List<AttractionInfoDto> searchHotel(Map<String, Object> map);
+	List<AttractionInfoDto> searchFood(Map<String, Object> map);
+
 }

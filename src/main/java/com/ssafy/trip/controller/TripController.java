@@ -128,7 +128,34 @@ public class TripController extends HttpServlet {
 			return exceptionHandling(e);
 		}
 	}
-	
+	@PostMapping("/searchHotel")
+	protected ResponseEntity<?> searchHotel(@RequestBody Map<String, Object> map) throws ServletException, IOException {
+		List<AttractionInfoDto> list = new ArrayList<AttractionInfoDto>();
+		try {
+			list = attractionService.searchHotel(map);
+			if(list!=null && !list.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.OK).body(list); 
+			}else {
+				return new ResponseEntity<List>(Collections.EMPTY_LIST, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	@PostMapping("/searchFood")
+	protected ResponseEntity<?> searchFood(@RequestBody Map<String, Object> map) throws ServletException, IOException {
+		List<AttractionInfoDto> list = new ArrayList<AttractionInfoDto>();
+		try {
+			list = attractionService.searchFood(map);
+			if(list!=null && !list.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.OK).body(list); 
+			}else {
+				return new ResponseEntity<List>(Collections.EMPTY_LIST, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

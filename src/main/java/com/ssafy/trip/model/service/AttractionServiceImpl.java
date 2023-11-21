@@ -53,6 +53,18 @@ public class AttractionServiceImpl implements AttractionService {
 	}
 
 
+	@Override
+	public List<AttractionInfoDto> searchHotel(Map<String, Object> map) {
+		return attractionMapper.searchHotel(map);
+	}
+
+
+	@Override
+	public List<AttractionInfoDto> searchFood(Map<String, Object> map) {
+		return attractionMapper.searchFood(map);
+	}
+
+
 	
 
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.ssafy.trip.model.AttractionDescriptionDto;
 import com.ssafy.trip.model.AttractionInfoDto;
 import com.ssafy.trip.model.GugunDto;
 import com.ssafy.trip.model.SidoDto;
@@ -31,4 +32,6 @@ public interface AttractionMapper {
 	List<AttractionInfoDto> searchByTitle(String title);
 	List<AttractionInfoDto> searchByPoint(Map<String, Object> map);
 	String getDescription(int contentId);
+	List<AttractionInfoDto> searchHotel(Map<String, Object> map);
+	List<AttractionInfoDto> searchFood(Map<String, Object> map);
 }
