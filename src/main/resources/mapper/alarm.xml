@@ -14,9 +14,9 @@
 	</resultMap>
 	
 	<select id="getAlarm" parameterType="string" resultMap="alarm">
-		select id,type,from_user_id,to_user_id,register_time
+		select id,type,from_user_id,to_user_id,register_time,is_read
 		from alarm
-		where to_user_id = #{userId} and is_read = 0
+		where to_user_id = #{userId}
 	</select>
 	
 	<insert id="sendAlarm" parameterType="alarmDto">
