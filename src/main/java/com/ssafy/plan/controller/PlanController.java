@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.plan.model.MyPlanInfoDto;
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanRegisterRequestDto;
 import com.ssafy.plan.model.PlanSearchResponseDto;
@@ -83,6 +84,28 @@ public class PlanController {
 		planService.deletePlanById(id);
 		
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/getMyTourInfo/{planId}")
+	public ResponseEntity<?> searchTourInfoByPlanId(@PathVariable int planId) throws Exception{
+		try {
+			List<MyPlanInfoDto>  list = planService.getMyTourInfo(planId);
+			return new ResponseEntity<List<MyPlanInfoDto> >(list,HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@DeleteMapping("/deletePlanInfoByPlanId/{planId}")
+	public ResponseEntity<?> deletePlanInfoByPlanId(@PathVariable int planId) throws Exception{
+		try {
+			planService.deletePlanInfoByPlanId(planId);
+			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity(HttpStatus.NOT_FOUND);

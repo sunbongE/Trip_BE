@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ssafy.plan.model.MyPlanInfoDto;
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanInfoDto;
 import com.ssafy.plan.model.PlanRegisterRequestDto;
@@ -102,6 +103,17 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public List<PlanDto> searchPlanByUserId(String userId) throws SQLException {
 		return planMapper.searchPlanByUserId(userId);
+	}
+
+	@Override
+	public List<MyPlanInfoDto>  getMyTourInfo(int planId) throws SQLException {
+		return  planMapper.getMyTourInfo(planId);
+	}
+
+	@Override
+	public void deletePlanInfoByPlanId(int planId) throws SQLException {
+		planMapper.deletePlanInfoByPlanId(planId);
+		
 	}
 
 	/*

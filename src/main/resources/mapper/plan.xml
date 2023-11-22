@@ -16,6 +16,12 @@
 		<result column="content_order" property="contentOrder"/>
 	</resultMap>
 	
+	<resultMap type="myPlanInfoDto" id="myPlanInfo">
+		<result column="plan_id" property="planId"/>
+		<result column="title" property="title"/>
+		<result column="content_order" property="contentOrder"/>
+	</resultMap>
+	
 	<insert id="registPlan" parameterType="planDto">
 		insert into plan (subject, user_id, description)
 		values(#{subject}, #{userId}, #{description})
@@ -64,9 +70,23 @@
 		delete from plan_info
 		where plan_id = #{planId};
 	</delete>
+	
 	<select id="searchPlanInfoByPlanId" parameterType="map" resultMap="planInfo">
 		select * from plan_info
 		where plan_id = #{planId}
 		order by content_order;
 	</select>
+	
+	
+	<select id="getMyTourInfo" parameterType="int" resultType="map">
+		select pi.plan_id, pi.content_order, a.title
+		from plan as p inner join plan_info as pi
+		on pi.plan_id = p.id
+		inner join attraction_info as a 
+		on pi.content_id = a.content_id
+		where p.id = #{planId}
+		order by pi.content_order;
+	</select>
+	
+	
 </mapper>

@@ -3,6 +3,7 @@ package com.ssafy.plan.model.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.ssafy.plan.model.MyPlanInfoDto;
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanInfoDto;
 import com.ssafy.plan.model.PlanRegisterRequestDto;
@@ -18,4 +19,9 @@ public interface PlanService {
 	List<PlanSearchResponseDto> searchAll() throws SQLException;
 	PlanSearchResponseDto searchPlanById(int id) throws SQLException;
 	List<PlanDto> searchPlanByUserId(String userId) throws SQLException;
+	
+	// myPage > plan에 여행지 정보 제공
+	List<MyPlanInfoDto> getMyTourInfo(int planId)throws SQLException;
+
+	void deletePlanInfoByPlanId(int planId) throws SQLException;
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.plan.model.MyPlanInfoDto;
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanInfoDto;
 
@@ -23,4 +24,7 @@ public interface PlanMapper {
 	void deletePlanInfo(Map<String, String> map) throws SQLException;
 	List<PlanInfoDto> searchPlanInfoByPlanId(int planId) throws SQLException;
 	void deletePlanInfoByPlanId(int planId) throws SQLException;
+	
+	// myPage > plan에 여행지 정보 제공
+	List<MyPlanInfoDto> getMyTourInfo(int planId)throws SQLException;
 }
