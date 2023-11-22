@@ -16,7 +16,7 @@
 	<select id="getAlarm" parameterType="string" resultMap="alarm">
 		select id,type,from_user_id,to_user_id,register_time,is_read
 		from alarm
-		where to_user_id = #{userId}
+		where to_user_id = #{userId} order by is_read
 	</select>
 	
 	<insert id="sendAlarm" parameterType="alarmDto">
@@ -24,9 +24,9 @@
 		values(#{type}, #{fromUserId}, #{toUserId})
 	</insert>
  
- <delete id="deleteAlarm" parameterType="int">
+ <delete id="deleteAlarm" parameterType="string">
  	delete from alarm
- 	where id = #{id}
+ 	where to_user_id = #{userId}
  </delete>
  
  <update id="readAlarm" parameterType="int">

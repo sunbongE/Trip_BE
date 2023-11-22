@@ -56,10 +56,10 @@ public class AlarmController {
 		}
 	}
 	
-	@DeleteMapping("/deleteAlarm/{id}")
-	public ResponseEntity<?> deleteAlarm(@PathVariable("id") int id){
+	@DeleteMapping("/deleteAlarm/{userId}")
+	public ResponseEntity<?> deleteAlarm(@PathVariable("userId") String userId){
 		try {
-			alarmService.deleteAlarm(id);
+			alarmService.deleteAlarm(userId);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);

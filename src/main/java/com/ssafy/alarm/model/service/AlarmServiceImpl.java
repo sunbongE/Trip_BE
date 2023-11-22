@@ -27,8 +27,8 @@ public class AlarmServiceImpl implements AlarmService {
 	}
 
 	@Override
-	public void deleteAlarm(int id) {
-		alarmMapper.deleteAlarm(id);
+	public void deleteAlarm(String userId) {
+		alarmMapper.deleteAlarm(userId);
 	}
 
 	@Override

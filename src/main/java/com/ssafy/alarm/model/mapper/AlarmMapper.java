@@ -12,7 +12,7 @@ public interface AlarmMapper {
 	
 	void sendAlarm(AlarmDto alarmDto);
 	
-	void deleteAlarm(int id);
+	void deleteAlarm(String userId);
 	
 	void readAlarm(int id);
 	
