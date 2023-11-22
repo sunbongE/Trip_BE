@@ -67,10 +67,10 @@ public class AlarmController {
 	}
 	
 	@PutMapping("/readAlarm")
-	public ResponseEntity<?> readAlarm(@RequestBody AlarmDto alarmDto){
-	    log.debug("id - {}", alarmDto.getId());
+	public ResponseEntity<?> readAlarm(@RequestBody int id){
+	    log.debug("id - {}", id);
 	    try {
-	        alarmService.readAlarm(alarmDto.getId());
+	        alarmService.readAlarm(id);
 	        return new ResponseEntity<Void>(HttpStatus.OK);
 	    } catch (Exception e) {
 	        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
