@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.trip.model.AttractionInfoDto;
@@ -159,5 +160,16 @@ public class TripController extends HttpServlet {
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
 		return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping("/find/{contentId}")
+	protected ResponseEntity<AttractionInfoDto> findByContentId(@PathVariable int contentId) throws ServletException, IOException {
+		try {
+			AttractionInfoDto dto = attractionService.findByContentId(contentId);
+			return ResponseEntity.status(HttpStatus.OK).body(dto);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(new AttractionInfoDto());
 	}
 }

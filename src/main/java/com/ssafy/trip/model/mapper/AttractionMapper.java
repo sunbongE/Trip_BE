@@ -34,4 +34,5 @@ public interface AttractionMapper {
 	String getDescription(int contentId);
 	List<AttractionInfoDto> searchHotel(Map<String, Object> map);
 	List<AttractionInfoDto> searchFood(Map<String, Object> map);
+	AttractionInfoDto findByContentId(int contentId);
 }

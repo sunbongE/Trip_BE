@@ -95,13 +95,20 @@
  	FROM attraction_info
 	WHERE content_type_id in (32)
 	ORDER BY ST_DISTANCE_Sphere(POINT(longitude, latitude), POINT(#{longitude}, #{latitude}))
-	LIMIT 6;
+	LIMIT 3;
 	</select>
+	
 	<select id="searchFood" parameterType="map" resultMap="info">
 	SELECT content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image,first_image2,readcount,latitude,longitude,mlevel 
  	FROM attraction_info
 	WHERE content_type_id in (39)
 	ORDER BY ST_DISTANCE_Sphere(POINT(longitude, latitude), POINT(#{longitude}, #{latitude}))
-	LIMIT 6;
+	LIMIT 3;
+	</select>
+	
+	<select id = "findByContentId" parameterType="int" resultMap="info">
+	SELECT content_id, content_type_id, title, addr1, addr2, zipcode, tel, first_image,first_image2,readcount,latitude,longitude,mlevel 
+ 	FROM attraction_info
+ 	WHERE content_id = #{contentId}
 	</select>
 </mapper>

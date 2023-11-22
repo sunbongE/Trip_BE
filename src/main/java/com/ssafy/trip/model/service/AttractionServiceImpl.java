@@ -65,6 +65,12 @@ public class AttractionServiceImpl implements AttractionService {
 	}
 
 
+	@Override
+	public AttractionInfoDto findByContentId(int contentId) {
+		return attractionMapper.findByContentId(contentId);
+	}
+
+
 	
 
 }
