@@ -20,8 +20,8 @@
 	</select>
 	
 	<insert id="sendAlarm" parameterType="alarmDto">
-		insert into alarm(type, from_user_id, to_user_id)
-		values(#{type}, #{fromUserId}, #{toUserId})
+		insert into alarm(type, from_user_id, to_user_id, register_time,is_read)
+		values(#{type}, #{fromUserId}, #{toUserId}, now(), 0)
 	</insert>
  
  <delete id="deleteAlarm" parameterType="string">

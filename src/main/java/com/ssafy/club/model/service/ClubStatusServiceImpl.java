@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.ssafy.alarm.model.AlarmDto;
+import com.ssafy.alarm.model.mapper.AlarmMapper;
 import com.ssafy.club.model.ClubDto;
 import com.ssafy.club.model.ClubStatusDto;
 import com.ssafy.club.model.mapper.ClubMapper;
@@ -20,10 +22,12 @@ public class ClubStatusServiceImpl implements ClubStatusService {
 
 	private final ClubStatusMapper mapper;
 	private final ClubMapper clubMapper;
-
-	public ClubStatusServiceImpl(ClubStatusMapper mapper, ClubMapper clubMapper) {
+	private final AlarmMapper alramMapper;
+	
+	public ClubStatusServiceImpl(ClubStatusMapper mapper, ClubMapper clubMapper, AlarmMapper alramMapper) {
 		this.mapper = mapper;
 		this.clubMapper = clubMapper;
+		this.alramMapper = alramMapper;
 	}
 
 	@Override
@@ -37,12 +41,16 @@ public class ClubStatusServiceImpl implements ClubStatusService {
 		// 들어갈 수 있다면
 		if (people + 1 <= totalCount) {
 			mapper.insertClubStatus(dto);
+			
+			// 들어갔는데 정원이 차게 된다면
 			if (totalCount - people == 1) {
 				ClubDto clubDto = new ClubDto();
 				clubDto.setId(clubId);
 				clubDto.setStatus(2);
 
 				clubMapper.updateClub(clubDto);
+				// 알람
+				
 			}
 		} else {
 			throw new Exception("요청 불가");
@@ -70,6 +78,7 @@ public class ClubStatusServiceImpl implements ClubStatusService {
 		mapper.replyToAnswer(map);
 		ClubStatusDto statusDto = mapper.findById((int) map.get("id"));
 		int answer = (int) map.get("answer");
+		AlarmDto alarmDto = new AlarmDto();
 		switch (answer) {
 		case 101: // 수락
 			// 수락 알람 넣기
@@ -80,9 +89,17 @@ public class ClubStatusServiceImpl implements ClubStatusService {
 			mem.put("userId", userId);
 			clubMapper.initClubMember(mem);
 			// 사람다찼는데 승낙하는거막아야함
+			alarmDto.setToUserId((String)map.get("fromUserId")); // 받은 사람이 보낸사람한테 보냄
+			alarmDto.setFromUserId((String)map.get("toUserId"));
+			alarmDto.setType(101);
+			alramMapper.sendAlarm(alarmDto);
 			break;
 		case 102: // 거부
-			// 거부알람 넣기
+			// 거부알람 넣기AlarmDto alarmDto = new AlarmDto();
+			alarmDto.setToUserId((String)map.get("fromUserId")); // 받은 사람이 보낸사람한테 보냄
+			alarmDto.setFromUserId((String)map.get("toUserId"));
+			alarmDto.setType(102);
+			alramMapper.sendAlarm(alarmDto);
 			break;
 		default:
 			break;

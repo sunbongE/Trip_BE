@@ -160,6 +160,7 @@ public class BoardController extends HttpServlet {
 			boardService.deleteArticle(articleNo);
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 	}

@@ -8,7 +8,7 @@
 		<result column = "from_user_id" property= "fromUserId"/>
 		<result column = "to_user_id" property= "toUserId"/>
 		<result column = "status" property= "status"/>
-		<result column = "sinceDate" property= "sinceDate"/>
+		<result column = "since_date" property= "sinceDate"/>
 	</resultMap>
 
 
@@ -20,7 +20,7 @@
 
 	<update id="answer" parameterType="friendshipDto">
 	update friendship 
-	set status = #{status}
+	set status = #{status}, since_date = now()
 	where id = #{id}
 	</update>
 
@@ -31,15 +31,15 @@
 	</delete>
 	
 	<insert id="friendRequest" parameterType="map">
-	insert into friendship(from_user_id,to_user_id)
-	values(#{fromUserId},#{toUserId})
+	insert into friendship(from_user_id,to_user_id, status, since_date)
+	values(#{fromUserId},#{toUserId}, 203, now())
 	</insert>
 	
 	<select id="searchByStatus" parameterType="map" resultMap="friendship">
 		select * 
 		from friendship 
 		where (status=#{status} and from_user_id = #{userId}) 
-		or (status=#{status} and to_user_id = #{userId});
+		or (status=#{status} and to_user_id = #{userId})
 
 	</select>
 </mapper>
