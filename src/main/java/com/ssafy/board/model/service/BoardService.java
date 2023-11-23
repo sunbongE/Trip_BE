@@ -12,7 +12,7 @@ import com.ssafy.board.model.FileInfoDto;
 public interface BoardService {
 
 	void registerArticle(BoardDto boardDto);
-
+//	void registerOnlyArticle(BoardDto boardDto);
 	BoardListDto searchListAll(Map<String, String> map) throws SQLException;
 
 	List<BoardDto> searchListBySubject(String subject);

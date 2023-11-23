@@ -27,7 +27,9 @@ public class BoardServiceImpl implements BoardService {
 	public void registerArticle(BoardDto boardDto) {
 		boardMapper.registerArticle(boardDto);
 		// file upload
-		boardMapper.fileRegister(boardDto);
+		if(boardDto.getFileInfos() != null ) {
+			boardMapper.fileRegister(boardDto);
+		};
 	}
 
 	@Override
@@ -96,6 +98,8 @@ public class BoardServiceImpl implements BoardService {
 	public List<FileInfoDto> fileInfoList(int articleNo) throws Exception {
 		return boardMapper.fileInfoList(articleNo);
 	}
+
+
 
 	
 

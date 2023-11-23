@@ -32,8 +32,8 @@ public class FriendshipServiceImpl implements FriendshipService{
 		friendshipMapper.friendRequest(map);
 		// 친구 요청시 알람 발생
 		AlarmDto alarmDto = new AlarmDto();
-		alarmDto.setToUserId(map.get("fromUserId")); // 받은 사람이 보낸사람한테 보냄
-		alarmDto.setFromUserId(map.get("toUserId"));
+		alarmDto.setToUserId(map.get("toUserId")); // 받은 사람이 보낸사람한테 보냄
+		alarmDto.setFromUserId(map.get("fromUserId"));
 		alarmDto.setType(203);
 		alramMapper.sendAlarm(alarmDto);
 	}
@@ -52,12 +52,13 @@ public class FriendshipServiceImpl implements FriendshipService{
 			friendshipMapper.deleteById(friendshipDto.getId());
 			
 		}
-
+		System.out.println(">>>"+friendshipDto);
 		// 각 status으로 알람 보내기.
 		AlarmDto alarmDto = new AlarmDto();
-		alarmDto.setToUserId(friendshipDto.getFromUserId()); // 받은 사람이 보낸사람한테 보냄
-		alarmDto.setFromUserId(friendshipDto.getToUserId());
+		alarmDto.setToUserId(friendshipDto.getToUserId()); // 받은 사람이 보낸사람한테 보냄
+		alarmDto.setFromUserId(friendshipDto.getFromUserId());
 		alarmDto.setType(status);
+		System.out.println("asdasdasdasdasd>>>>>>>>>"+alarmDto);
 		alramMapper.sendAlarm(alarmDto);
 
 	}

@@ -16,7 +16,8 @@
 		<result column="content_id" property="contentId"/>
 		<collection property="fileInfos" column="article_no" javaType="list" ofType="fileInfoDto" select="fileInfoList"/>
 	</resultMap>
-		<resultMap type="fileInfoDto" id="file">
+	
+	<resultMap type="fileInfoDto" id="file">
 		<result column="save_folder" property="saveFolder"/>
 		<result column="original_file" property="originalFile"/>
 		<result column="save_file" property="saveFile"/>
@@ -109,10 +110,8 @@ order by hit desc, register_time desc
 		where article_no = #{articleNo}
 	</select>
 	
+	
 <!-- 
-	<resultMap type="boardDto" id="viewArticle" extends="article">
-		<collection property="fileInfos" column="article_no" javaType="list" ofType="fileInfoDto" select="fileInfoList"/>
-	</resultMap>
 
 	<resultMap type="fileInfoDto" id="file">
 		<result column="save_folder" property="saveFolder"/>
