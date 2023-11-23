@@ -64,10 +64,6 @@ public class BoardController extends HttpServlet {
 
 	@PostMapping(value="/regist")
 	protected ResponseEntity<?> regist( @RequestPart("boardDto") BoardDto boardDto, @RequestPart(value="upfile",required = false) MultipartFile[] files) throws IllegalStateException, IOException {
-		System.out.println(boardDto);
-		System.out.println(files);
-		System.out.println("??");
-//		return new ResponseEntity<Void>(HttpStatus.OK);
 		try {
 //			 비속어 필터
 			if (boardUtil.filterSlangs(boardDto.getContent())) {

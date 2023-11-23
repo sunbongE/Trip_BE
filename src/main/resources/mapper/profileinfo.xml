@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	
+<mapper namespace="com.ssafy.user.model.mapper.UserMapper">
+
+	<resultMap type="profileInfoDto" id="profileInfo">
+		<result column="user_id" property="userId"/>
+		<result column="save_folder" property="saveFolder"/>
+		<result column="original_file" property="originalFile"/>
+		<result column="save_file" property="saveFile"/>
+	</resultMap>
+	
+	<insert id="registerProfile" parameterType="profileInfoDto">
+		insert into profile_info (user_id, save_folder, original_file, save_file)
+		values
+		(#{userId}, #{saveFolder}, #{originalFile}, #{saveFile})
+	</insert>
+	
+	<select id="findProfileByUserId" parameterType="string" resultMap="profileInfo">
+		select user_id, save_folder, original_file, save_file
+		from profile_info
+		where user_id = #{userId}
+	</select>
+	
+	<delete id="deleteByUserId" parameterType="string">
+		delete from profile_info
+		where user_id = #{userId}
+	</delete>
+	
+</mapper>
