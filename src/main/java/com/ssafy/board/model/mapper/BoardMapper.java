@@ -12,6 +12,7 @@ import com.ssafy.board.model.FileInfoDto;
 public interface BoardMapper {
 
 	void registerArticle(BoardDto boardDto);
+	void registerOnlyArticle(BoardDto boardDto);
 
 	List<BoardDto> searchListAll(Map<String, Object> param); // 페이지네이션 정보 포함한 파라미터.
 	// 페이지네이션 관련

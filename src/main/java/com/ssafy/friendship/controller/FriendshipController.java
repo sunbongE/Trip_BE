@@ -88,6 +88,10 @@ public class FriendshipController {
 	public ResponseEntity<?> searchByStatus(@RequestBody Map<String, Object> map) throws Exception {
 		try {
 			List<FriendshipResponseDto> list = friendshipService.searchByStatus(map);
+			System.out.println(list);
+			if(list.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.OK).body(Collections.EMPTY_LIST);
+			}
 			return ResponseEntity.status(HttpStatus.OK).body(list);
 		} catch (Exception e){
 			return exceptionHandling(e);

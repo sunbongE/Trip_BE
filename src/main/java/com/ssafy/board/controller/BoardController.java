@@ -64,6 +64,7 @@ public class BoardController extends HttpServlet {
 
 	@PostMapping(value="/regist")
 	protected ResponseEntity<?> regist( @RequestPart("boardDto") BoardDto boardDto, @RequestPart(value="upfile",required = false) MultipartFile[] files) throws IllegalStateException, IOException {
+		System.out.println(files);
 		try {
 //			 비속어 필터
 			if (boardUtil.filterSlangs(boardDto.getContent())) {
@@ -72,8 +73,9 @@ public class BoardController extends HttpServlet {
 			}
 
 //			FileUpload 관련 설정.
-			log.debug("MultipartFile.isEmpty : {}", files[0].isEmpty());
-			if (!files[0].isEmpty()) {
+//			log.debug("MultipartFile.isEmpty : {}", files[0].isEmpty());
+			if (files!=null && !files[0].isEmpty()) {
+				System.out.println("오나");
 				String realPath = servletContext.getRealPath("/upload");
 //				String realPath = servletContext.getRealPath("/resources/img");
 				String today = new SimpleDateFormat("yyMMdd").format(new Date());
@@ -99,7 +101,9 @@ public class BoardController extends HttpServlet {
 				}
 				boardDto.setFileInfos(fileInfos);
 			}
+
 			boardService.registerArticle(boardDto);
+//			boardService.
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			return exceptionHandling(e);
