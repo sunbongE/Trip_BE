@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.user.model.ProfileInfoDto;
 import com.ssafy.user.model.UserDto;
 
 @Mapper
@@ -33,4 +34,11 @@ public interface UserMapper {
 	Object getRefreshToken(String userid) throws SQLException;
 	
 	void deleteRefreshToken(Map<String, String> map) throws SQLException;
+	
+	// profile
+	void registerProfile(ProfileInfoDto dto) throws SQLException;
+	
+	void deleteByUserId(String userId) throws SQLException;
+	
+	ProfileInfoDto findProfileByUserId(String userId) throws SQLException;
 }

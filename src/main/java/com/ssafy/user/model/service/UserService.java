@@ -3,6 +3,7 @@ package com.ssafy.user.model.service;
 import java.sql.SQLException;
 import java.util.Map;
 
+import com.ssafy.user.model.ProfileInfoDto;
 import com.ssafy.user.model.UserDto;
 
 public interface UserService {
@@ -22,4 +23,11 @@ public interface UserService {
 	Object getRefreshToken(String userId) throws Exception;
 	void deleRefreshToken(String userId) throws Exception;
 	
+	//profile
+
+	void registerProfile(ProfileInfoDto dto) throws SQLException;
+	
+	void deleteByUserId(String userId) throws SQLException;
+	
+	ProfileInfoDto findProfileByUserId(String userId) throws SQLException;
 }

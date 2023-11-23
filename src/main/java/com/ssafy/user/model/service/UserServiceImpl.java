@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.ssafy.user.model.ProfileInfoDto;
 import com.ssafy.user.model.UserDto;
 import com.ssafy.user.model.mapper.UserMapper;
 import com.ssafy.user.util.UserUtil;
@@ -160,5 +161,23 @@ public class UserServiceImpl implements UserService {
 		map.put("userId", userId);
 		map.put("token", null);
 		userMapper.deleteRefreshToken(map);
+	}
+
+	@Override
+	public void registerProfile(ProfileInfoDto dto) throws SQLException {
+		if(userMapper.findProfileByUserId(dto.getUserId()) != null) {
+			userMapper.deleteByUserId(dto.getUserId());
+		}
+		userMapper.registerProfile(dto);
+	}
+
+	@Override
+	public void deleteByUserId(String userId) throws SQLException {
+		userMapper.deleteByUserId(userId);
+	}
+
+	@Override
+	public ProfileInfoDto findProfileByUserId(String userId) throws SQLException {
+		return userMapper.findProfileByUserId(userId);
 	}
 }
