@@ -30,4 +30,6 @@ public interface UserService {
 	void deleteByUserId(String userId) throws SQLException;
 	
 	ProfileInfoDto findProfileByUserId(String userId) throws SQLException;
+	
+	int isCorrectPwd(Map<String, String> map) throws Exception;
 }

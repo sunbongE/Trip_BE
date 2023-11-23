@@ -4,94 +4,113 @@
 
 <mapper namespace="com.ssafy.user.model.mapper.UserMapper">
 	<resultMap type="userDto" id="user">
-		<result column="user_id" property="userId"/>
-		<result column="user_name" property="userName"/>
-		<result column="user_password" property="userPassword"/>
-		<result column="email_id" property="emailId"/>
-		<result column="email_domain" property="emailDomain"/>
-		<result column="birth" property="birth"/>
-		<result column="user_sido_id" property="userSidoId"/>
-		<result column="user_gu_id" property="userGuId"/>
-		<result column="join_date" property="joinDate"/>
-		<result column="salt" property="salt"/>
-		<result column="grade_id" property="gradeId"/>
-		<result column="token" property="token"/>
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_password" property="userPassword" />
+		<result column="email_id" property="emailId" />
+		<result column="email_domain" property="emailDomain" />
+		<result column="birth" property="birth" />
+		<result column="user_sido_id" property="userSidoId" />
+		<result column="user_gu_id" property="userGuId" />
+		<result column="join_date" property="joinDate" />
+		<result column="salt" property="salt" />
+		<result column="grade_id" property="gradeId" />
+		<result column="token" property="token" />
 	</resultMap>
-	
+
 	<insert id="join" parameterType="userDto">
-    INSERT INTO members (user_id, user_name, user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, salt, grade_id, token)
-    VALUES (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain}, #{birth}, #{userSidoId}, #{userGuId}, now(), #{salt}, #{gradeId}, #{token})
+		INSERT INTO members (user_id, user_name, user_password, email_id,
+		email_domain, birth, user_sido_id, user_gu_id, join_date, salt,
+		grade_id, token)
+		VALUES (#{userId}, #{userName}, #{userPassword}, #{emailId}, #{emailDomain},
+		#{birth}, #{userSidoId}, #{userGuId}, now(), #{salt}, #{gradeId},
+		#{token})
 	</insert>
-	
+
 	<select id="login" parameterType="map" resultMap="user">
-    select user_id, user_name, grade_id, token
+		select user_id, user_name, grade_id, token
 		from members
-		where user_id=#{userId} and user_password = #{userPassword}
+		where
+		user_id=#{userId} and user_password = #{userPassword}
 	</select>
-	
+
 	<update id="update" parameterType="userDto">
 		update members
 		<trim prefix="set" suffixOverrides=",">
-			<if test="userPassword != null">user_password = #{userPassword},</if>
-			<if test="userName != null">user_name = #{userName},</if>
-			<if test="emailId != null">email_id = #{emailId},</if>
-			<if test="emailDomain != null">email_domain = #{emailDomain},</if>
+			<if test="userPassword != null and userPassword != ''">user_password = #{userPassword},</if>
+			<if test="userName != null and userName != ''">user_name = #{userName},</if>
+			<if test="emailId != null and emailId != ''">email_id = #{emailId},</if>
+			<if test="emailDomain != null and emailDomain != ''">email_domain = #{emailDomain},</if>
+			<if test="salt != null and salt != ''">salt = #{salt},</if>
 		</trim>
 		where user_id = #{userId}
 	</update>
 
-	 <select id="checkId" parameterType="string" resultType="string">
-	 select user_id
-	 from members
-	 where user_id = ${userId}
-	 </select>
-	
-  	<delete id="delete" parameterType="String">
-    	DELETE FROM members 
-    	WHERE user_id= #{userId}
+	<select id="checkId" parameterType="string" resultType="string">
+		select user_id
+		from members
+		where user_id = ${userId}
+	</select>
+
+	<delete id="delete" parameterType="String">
+		DELETE FROM members
+		WHERE user_id= #{userId}
 	</delete>
-	
-	<select id="findByUserId" parameterType="String" resultMap="user">
-		select user_id, user_name,user_password, email_id, email_domain, birth, user_sido_id, user_gu_id, join_date, grade_id ,salt,token
+
+	<select id="findByUserId" parameterType="String"
+		resultMap="user">
+		select user_id, user_name,user_password, email_id,
+		email_domain, birth, user_sido_id, user_gu_id, join_date, grade_id
+		,salt,token
 		from members
 		where user_id=#{userId}
 	</select>
-	
+
 	<select id="findUserId" parameterType="map" resultType="String">
-	select user_id 
-	from members
-	where email_id = #{emailId} and birth = #{birth}
-	
+		select user_id
+		from members
+		where email_id = #{emailId} and birth = #{birth}
+
 	</select>
 
+	<select id="isCorrectPwd" parameterType="map"
+		resultType="string">
+		select user_password
+		from members
+		where
+		user_password=#{userPassword} and user_id=#{userId}
+	</select>
 
 	<select id="findUserPwd" parameterType="map" resultType="String">
-	select user_password
-	from members
-	where user_id = #{userId} and email_id = #{emailId} and birth = #{birth}
+		select user_password
+		from members
+		where user_id = #{userId} and email_id = #{emailId} and birth = #{birth}
 	</select>
-	
-	<update id ="updatePasswordInfo" parameterType="map">
-	update members
-	set salt = #{salt}, user_password = #{userPassword}
-	where user_id=#{userId}
+
+	<update id="updatePasswordInfo" parameterType="map">
+		update members
+		set salt = #{salt}, user_password = #{userPassword}
+		where user_id=#{userId}
 	</update>
 
 	<update id="saveRefreshToken" parameterType="map">
 		update members
-		set token = #{token}
+		set
+		token = #{token}
 		where user_id = #{userId}
 	</update>
-	
-	<select id="getRefreshToken" parameterType="string" resultType="string">
+
+	<select id="getRefreshToken" parameterType="string"
+		resultType="string">
 		select token
 		from members
 		where user_id = #{userId}
 	</select>
-	
+
 	<update id="deleteRefreshToken" parameterType="map">
 		update members
-		set token = #{token, jdbcType=VARCHAR}
+		set
+		token = #{token, jdbcType=VARCHAR}
 		where user_id = #{userId}
 	</update>
 

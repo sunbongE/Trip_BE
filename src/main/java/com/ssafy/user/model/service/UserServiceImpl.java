@@ -72,6 +72,26 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int update(UserDto userDto) throws SQLException {
+		// 2. salt + stretching
+		try {
+			log.debug("REQUEST USERDTO : {}", userDto );
+			if( userDto.getUserPassword() != null && !userDto.getUserPassword().equals("")) {
+			String password = userDto.getUserPassword();
+			// 1. salt 생성
+			String salt = UserUtil.generateSalt();
+			log.debug("Generated Salt : {} ", salt);
+			
+			String hashedPassword = UserUtil.hashingPassword(password, salt);
+			log.debug("Hashed Password : {} ", hashedPassword);
+			
+			// 3. salt 와 hashedPw 할당
+			userDto.setSalt(salt);
+			userDto.setUserPassword(hashedPassword);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 		return userMapper.update(userDto);
 
 	}
@@ -179,5 +199,23 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ProfileInfoDto findProfileByUserId(String userId) throws SQLException {
 		return userMapper.findProfileByUserId(userId);
+	}
+
+	@Override
+	public int isCorrectPwd(Map<String, String> map) throws Exception {
+		String userId = map.get("userId");
+		UserDto userDto = userMapper.findByUserId(userId);
+
+		String inputUserPassword = map.get("userPassword");
+		System.out.println(userDto.getSalt());
+		log.debug("\t Password user inputed : {}" , inputUserPassword);
+		// 2. 해당 salt 로 input pw를 해싱 후
+		String hashedInputUserPassword = getHashedPasswordWithSalt(inputUserPassword, userDto.getSalt());
+		System.out.println(hashedInputUserPassword);
+		System.out.println(userDto.getUserPassword());
+		if(hashedInputUserPassword.equals(userDto.getUserPassword())) {
+			return 1;
+		} 
+		return 0; // exception
 	}
 }

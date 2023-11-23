@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -187,13 +188,13 @@ public class UserContoller {
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<?> update(@RequestBody UserDto userDto, HttpSession session) throws SQLException {
+	public ResponseEntity<?> update(@RequestBody UserDto userDto) throws SQLException {
+
+		log.debug("REQUEST USERDTO : {}", userDto );
 		int result = userService.update(userDto);
-		String userId = userDto.getUserId();
+//		int result = 0;
 		if (result == 1) {
-			UserDto updated = userService.findByUserId(userId);
-			session.setAttribute("userinfo", updated);
-			return new ResponseEntity<>(updated, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>("수정에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -326,6 +327,22 @@ public class UserContoller {
 				return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 			} else {
 				return ResponseEntity.status(HttpStatus.OK).body(dto);
+			}
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
+	@PostMapping("/isCorrectPwd")
+	protected ResponseEntity<?> isCorrectPwd(@RequestBody Map<String, String> req){
+		try {
+			log.debug("INPUT : {} ", req);
+			int isValid = userService.isCorrectPwd(req);
+			if (isValid == 1) {
+				return ResponseEntity.status(HttpStatus.OK).body(true);
+			} else {
+				return ResponseEntity.status(HttpStatus.OK).body(false);
+
 			}
 		} catch (Exception e) {
 			return exceptionHandling(e);
