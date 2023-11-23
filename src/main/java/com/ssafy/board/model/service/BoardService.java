@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.board.model.BoardDto;
-import com.ssafy.board.model.BoardListDto; 
+import com.ssafy.board.model.BoardListDto;
+import com.ssafy.board.model.FileInfoDto; 
 
 
 public interface BoardService {
@@ -25,4 +26,6 @@ public interface BoardService {
 	void updateHit(int articleNo);
 	
 	void updateRecomment(int articleNo);
+	
+	List<FileInfoDto> fileInfoList(int articleNo) throws Exception;
 }

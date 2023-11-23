@@ -30,5 +30,5 @@ public interface BoardMapper {
 	
 	void fileRegister(BoardDto boardDto);
 	
-	List<FileInfoDto> fileInfoDto(int articleNo);
+	List<FileInfoDto> fileInfoList(int articleNo);
 }

@@ -8,11 +8,11 @@
 		<result column = "user_id" property= "userId"/>
 		<result column = "qna_id" property= "qnaId"/>
 		<result column = "content" property= "content"/>
-		<result column = "resgiter_time" property= "registerTime"/>
+		<result column = "register_time" property= "registerTime"/>
 	</resultMap>
 	
 	<insert id="register" parameterType="qnaAnswerDto">
-    INSERT INTO qna_answer (qna_id, content, user_id, resgiter_time)
+    INSERT INTO qna_answer (qna_id, content, user_id, register_time)
     VALUES (#{qnaId}, #{content}, #{userId}, now())
 	</insert>
 	
@@ -30,9 +30,9 @@
 	</delete>
 	
 	<select id="searchByQnaId" parameterType="int" resultMap="qnaAnswer">
-		select id, user_id, qna_id, content, resgiter_time 
+		select id, user_id, qna_id, content, register_time 
 		from qna_answer
-		where qna_id=#{qnaId}
+		where qna_id=#{qnaId} order by register_time desc
 	</select>
 	
 </mapper>

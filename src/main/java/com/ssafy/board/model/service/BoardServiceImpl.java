@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.board.model.BoardDto;
 import com.ssafy.board.model.BoardListDto;
+import com.ssafy.board.model.FileInfoDto;
 import com.ssafy.board.model.mapper.BoardMapper;
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -89,6 +90,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void updateRecomment(int articleNo) {
 		boardMapper.updateRecomment(articleNo);
+	}
+
+	@Override
+	public List<FileInfoDto> fileInfoList(int articleNo) throws Exception {
+		return boardMapper.fileInfoList(articleNo);
 	}
 
 	

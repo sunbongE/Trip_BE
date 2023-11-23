@@ -37,7 +37,7 @@ public class QnaAnswerController {
 	//C
 	@PostMapping("/regist")
 	public ResponseEntity<?> register(@RequestBody QnaAnswerDto qnaAnswerDto) throws SQLException {
-		System.out.println(qnaAnswerDto.getContent());
+		System.out.println(qnaAnswerDto);
 //		 비속어 필터
 			if (boardUtil.filterSlangs(qnaAnswerDto.getContent())) {
 				System.out.println("비속어 감지");
@@ -57,7 +57,8 @@ public class QnaAnswerController {
 	
 	//U dto
 	@PutMapping("/update")
-	public ResponseEntity<?> update(QnaAnswerDto qnaAnswerDto) throws SQLException {
+	public ResponseEntity<?> update(@RequestBody QnaAnswerDto qnaAnswerDto) throws SQLException {
+		System.out.println("오난요???"+qnaAnswerDto);
 //		 비속어 필터
 			if (boardUtil.filterSlangs(qnaAnswerDto.getContent())) {
 				System.out.println("비속어 감지");

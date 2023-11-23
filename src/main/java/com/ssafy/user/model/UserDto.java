@@ -20,4 +20,5 @@ public class UserDto {
 	private String salt;
 	private int gradeId;
 	private String token;
+	
 }

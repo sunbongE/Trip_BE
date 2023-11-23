@@ -163,6 +163,19 @@ public class BoardController extends HttpServlet {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 	}
+//	
+	@GetMapping("/file/{articleNo}")
+	protected ResponseEntity<?> fileInfoList(@PathVariable("articleNo") int articleNo)throws ServletException, IOException {
+		try {
+			List<FileInfoDto> list = boardService.fileInfoList(articleNo);
+			System.out.println("list==>"+list);
+			return new ResponseEntity<List<FileInfoDto>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
+	}
+	
 
 	private ResponseEntity<String> exceptionHandling(Exception e) {
 		e.printStackTrace();
